@@ -1,0 +1,95 @@
+// ==============================================================================
+// PHAETHON OS - FASTFETCH CORE CONFIGURATION
+// ==============================================================================
+// Shipped at: /etc/skel/.config/fastfetch/config.jsonc
+// Custom configuration designed to display a detailed system hardware/software
+// profile. Styled completely in the Zenless Zone Zero aesthetic (neon lime keys,
+// white values, diagonal slashes, and high-res image rendering).
+//
+
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "source": "/usr/share/phaethon/logo.txt",
+        "type": "file",
+        "padding": {
+            "right": 3
+        }
+    },
+    "display": {
+        "separator": " // ",
+        "color": {
+            "keys": "38;2;200;255;0",   // Neon Lime-yellow
+            "title": "38;2;212;175;55"  // Distro Gold for User@Host
+        },
+        "key": {
+            "width": 12
+        }
+    },
+    "modules": [
+        "title",
+        {
+            "type": "custom",
+            "format": "----------------------------------------",
+            "outputColor": "38;2;136;136;136" // Muted gray separator
+        },
+        {
+            "type": "os",
+            "key": "OS",
+            "format": "Phaethon OS: Belle"
+        },
+        {
+            "type": "kernel",
+            "key": "KERNEL"
+        },
+        {
+            "type": "uptime",
+            "key": "UPTIME"
+        },
+        {
+            "type": "packages",
+            "key": "PACKAGES"
+        },
+        {
+            "type": "shell",
+            "key": "SHELL"
+        },
+        {
+            "type": "de",
+            "key": "DE"
+        },
+        {
+            "type": "wm",
+            "key": "WM"
+        },
+        {
+            "type": "terminal",
+            "key": "TERMINAL"
+        },
+        {
+            "type": "cpu",
+            "key": "CPU"
+        },
+        {
+            "type": "gpu",
+            "key": "GPU"
+        },
+        {
+            "type": "memory",
+            "key": "RAM"
+        },
+        {
+            "type": "disk",
+            "key": "DISK"
+        },
+        {
+            "type": "custom",
+            "format": "----------------------------------------",
+            "outputColor": "38;2;136;136;136"
+        },
+        {
+            "type": "colors",
+            "symbol": "block"
+        }
+    ]
+}

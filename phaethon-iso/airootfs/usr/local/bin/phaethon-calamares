@@ -1,0 +1,108 @@
+#!/bin/bash
+# ==============================================================================
+# PHAETHON OS - CALAMARES RUNNER WRAPPER
+# ==============================================================================
+# Resolves library mismatches, grants display permissions, and launches
+# Calamares in both live ISO and installed-system contexts.
+#
+set -o pipefail
+
+CALAMARES_BIN="/usr/bin/calamares"
+LOG_TAG="phaethon-calamares"
+
+log() { echo "[$LOG_TAG] $*" >&2; }
+warn() { echo "[$LOG_TAG] WARNING: $*" >&2; }
+die() {
+    echo "[$LOG_TAG] FATAL: $*" >&2
+    if command -v notify-send &>/dev/null; then
+        notify-send -a "Phaethon OS" -u critical "Installer Error" "$*" 2>/dev/null || true
+    fi
+    exit 1
+}
+
+# --- Find Calamares ---
+if [ ! -x "$CALAMARES_BIN" ]; then
+    CALAMARES_BIN=$(command -v calamares 2>/dev/null)
+    if [ -z "$CALAMARES_BIN" ]; then
+        die "Calamares binary not found. Is cachyos-calamares installed?"
+    fi
+fi
+log "Using Calamares: $CALAMARES_BIN"
+
+# --- Fix library mismatches ---
+# The cachyos-calamares netinstall module links against libyaml-cpp.so.0.8
+# but the distro ships libyaml-cpp.so.0.9 (ABI compatible).
+if [ -f /usr/lib/libyaml-cpp.so.0.9 ] && [ ! -f /usr/lib/libyaml-cpp.so.0.8 ]; then
+    log "Linking libyaml-cpp.so.0.9 -> libyaml-cpp.so.0.8"
+    ln -sf libyaml-cpp.so.0.9 /usr/lib/libyaml-cpp.so.0.8 2>/dev/null || warn "Could not create yaml-cpp symlink"
+fi
+
+# Check for any other missing libraries and try to resolve them
+MISSING=$(ldd "$CALAMARES_BIN" 2>/dev/null | grep "not found" | awk '{print $1}')
+if [ -n "$MISSING" ]; then
+    log "Missing libraries: $MISSING"
+    for lib in $MISSING; do
+        base="${lib%.so*}"
+        found=$(find /usr/lib /usr/lib64 -maxdepth 2 -name "${base}.so.*" 2>/dev/null | sort -V | tail -1)
+        if [ -n "$found" ]; then
+            ln -sf "$found" "/usr/lib/$lib" 2>/dev/null && log "Fixed: $lib -> $found"
+        fi
+    done
+    ldconfig 2>/dev/null || true
+fi
+
+# --- Check for missing module libraries ---
+MOD_MISSING=$(for mod in /usr/lib/calamares/modules/*/libcalamares*.so; do
+    ldd "$mod" 2>/dev/null | grep "not found" | awk '{print $1}'
+done | sort -u)
+if [ -n "$MOD_MISSING" ]; then
+    log "Module missing libraries: $MOD_MISSING"
+    for lib in $MOD_MISSING; do
+        base="${lib%.so*}"
+        found=$(find /usr/lib /usr/lib64 -maxdepth 2 -name "${base}.so.*" 2>/dev/null | sort -V | tail -1)
+        if [ -n "$found" ]; then
+            ln -sf "$found" "/usr/lib/$lib" 2>/dev/null && log "Fixed module lib: $lib -> $found"
+        fi
+    done
+    ldconfig 2>/dev/null || true
+fi
+
+# --- Detect display server ---
+HAS_DISPLAY=false
+if [ -n "$WAYLAND_DISPLAY" ] && [ -S "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" ]; then
+    log "Wayland display detected: $WAYLAND_DISPLAY"
+    export QT_QPA_PLATFORM=wayland
+    export WAYLAND_DISPLAY="$WAYLAND_DISPLAY"
+    export XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR"
+    # Make Wayland socket accessible for root
+    chmod 777 "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" 2>/dev/null || true
+    HAS_DISPLAY=true
+elif [ -n "$DISPLAY" ]; then
+    log "X11 display detected: $DISPLAY"
+    export QT_QPA_PLATFORM=xcb
+    export DISPLAY="$DISPLAY"
+    if command -v xhost &>/dev/null; then
+        xhost +SI:localuser:root 2>/dev/null || warn "xhost failed"
+    fi
+    HAS_DISPLAY=true
+fi
+
+if ! $HAS_DISPLAY; then
+    warn "No display server detected (no WAYLAND_DISPLAY or DISPLAY). Calamares needs a graphical session."
+    warn "Please launch from the desktop environment, not from a TTY."
+    die "No display server available"
+fi
+
+# --- Preserve and launch ---
+if [ -n "$SUDO_USER" ]; then
+    log "Elevating via sudo for user: $SUDO_USER"
+    exec sudo -E env \
+        DISPLAY="$DISPLAY" \
+        WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
+        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+        QT_QPA_PLATFORM="$QT_QPA_PLATFORM" \
+        "$CALAMARES_BIN" "$@"
+else
+    log "Launching Calamares directly"
+    exec "$CALAMARES_BIN" "$@"
+fi

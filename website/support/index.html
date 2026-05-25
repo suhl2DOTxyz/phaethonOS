@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhaethonOS // Support</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header id="main-header">
+        <div class="header-container">
+            <div id="brand-logo">
+                <span class="logo-symbol"></span>
+                <a href="../index.html" style="text-decoration: none;" class="brand-name"><span>PHAETHON</span>OS</a>
+            </div>
+            <nav id="nav-menu">
+                <a href="../index.html" class="nav-link">HOME //</a>
+                <a href="../wiki/index.html" class="nav-link">WIKI //</a>
+                <a href="../docs/index.html" class="nav-link">DOCS //</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main style="padding: 140px 24px 80px; max-width: 900px; margin: 0 auto;">
+        <header class="section-header" style="text-align: left; margin-bottom: 40px; border-bottom: 2px solid var(--color-outline); padding-bottom: 20px;">
+            <span class="sub-title">GET ASSISTANCE //</span>
+            <h1 class="main-heading" style="font-size: 48px;">COMMUNITY SUPPORT</h1>
+        </header>
+
+        <section class="support-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px;">
+            <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 30px; border-radius: 0px;">
+                <h3 style="font-family: var(--font-heading); font-size: 22px; color: var(--color-accent); margin-bottom: 12px;">REPORT SYSTEM BUGS</h3>
+                <p style="color: var(--color-muted); font-size: 14px; margin-bottom: 20px;">Discovered a problem with packages, visual styling components, or schedulers? Open a ticket instantly on our tracker.</p>
+                <a href="../bugs/index.html" style="text-decoration: none; font-family: var(--font-heading); font-weight: 700; font-size: 14px; color: var(--color-accent); letter-spacing: 0.5px;">SUBMIT BUG /</a>
+            </div>
+
+            <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 30px; border-radius: 0px;">
+                <h3 style="font-family: var(--font-heading); font-size: 22px; color: var(--color-accent); margin-bottom: 12px;">COMMUNITY CHAT</h3>
+                <p style="color: var(--color-muted); font-size: 14px; margin-bottom: 20px;">Engage with other members, developers, and power gamers in real-time. Share customizations, setups, and game tweaks.</p>
+                <a href="https://suhl2.xyz/phaethonOS/chat" style="text-decoration: none; font-family: var(--font-heading); font-weight: 700; font-size: 14px; color: var(--color-accent); letter-spacing: 0.5px;">JOIN TELEGRAM /</a>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 style="font-family: var(--font-heading); font-size: 28px; margin-bottom: 24px; text-transform: uppercase;">FREQUENTLY ASKED QUESTIONS</h2>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="border: 2px solid var(--color-outline); padding: 20px;">
+                    <h4 style="color: var(--color-accent); margin-bottom: 8px;">HOW DO I UPDATE THE SYSTEM?</h4>
+                    <p style="color: var(--color-muted); font-size: 14px;">Since we are a rolling release distribution, simply open Konsole and run the standard package updates using Pacman or yay.</p>
+                </div>
+                <div style="border: 2px solid var(--color-outline); padding: 20px;">
+                    <h4 style="color: var(--color-accent); margin-bottom: 8px;">CAN I USE PROPRIETARY NVIDIA DRIVERS?</h4>
+                    <p style="color: var(--color-muted); font-size: 14px;">Yes. Custom NVIDIA packages are maintained within our repositories. Open system settings or use terminal utilities to set up proprietary modules.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <p class="epitaph">"Though greatly he failed, more greatly he dared." // Ovid</p>
+            <p class="copyright">&copy; 2026 PhaethonOS Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

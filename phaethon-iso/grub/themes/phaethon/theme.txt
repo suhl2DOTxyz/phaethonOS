@@ -1,0 +1,55 @@
+# ==============================================================================
+# PHAETHON OS - GRUB GRAPHICAL THEME (theme.txt)
+# ==============================================================================
+# Custom GRUB theme styled in the Zenless Zone Zero (ZZZ) visual style.
+# Flat solid black background, centered golden star emblem, neon-lime tagline,
+# and high-contrast neon-lime selection styling.
+#
+
+# Global settings
+desktop-color: "#0a0a0a"
+desktop-image: ""
+
+# Centered distro golden star emblem
++ image {
+    file: "logo.png"
+    left: 50% - 90
+    top: 15%
+    width: 180
+    height: 180
+}
+
+# Distribution brand label
++ label {
+    text: "P H A E T H O N   O S"
+    font: "Unifont Regular 16"
+    color: "#c8ff00"
+    left: 50%
+    align: "center"
+    top: 45%
+}
+
+# Distro brand tagline/motto
++ label {
+    text: "Though greatly he failed, more greatly he dared."
+    font: "Unifont Regular 16"
+    color: "#ffffff"
+    left: 50%
+    align: "center"
+    top: 52%
+}
+
+# Graphical boot list selection menu
++ boot_menu {
+    left: 50% - 250
+    top: 62%
+    width: 500
+    height: 250
+    item_font: "Unifont Regular 16"
+    selected_item_font: "Unifont Bold 16"
+    item_color: "#ffffff"
+    selected_item_color: "#0a0a0a"
+    selected_item_pixmap: "select.png"
+    item_height: 28
+    item_spacing: 12
+}

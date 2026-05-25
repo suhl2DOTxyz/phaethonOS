@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Phaethon OS Welcome Dashboard
+Comment=Launch Phaethon OS first-launch setup wizard
+Exec=/usr/local/bin/phaethon-welcome
+Icon=phaethon-logo
+Terminal=false
+StartupNotify=true
+Categories=System;Utility;
+X-KDE-autostart-phase=2
+X-KDE-autostart-after=plasma-desktop

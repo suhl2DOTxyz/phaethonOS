@@ -1,0 +1,347 @@
+/* ==============================================================================
+# PHAETHONOS - LANDING PAGE STYLESHEET (styles.css)
+# ==============================================================================
+# Implements a premium, stunning dark-mode visual interface matching the
+# Zenless Zone Zero graphic styling: pure black, neon lime highlights,
+# sharp 90-degree rectangle layouts, and wide Barlow Condensed headers.
+*/
+
+/* --- 1. GLOBAL ROOT VARIABLES & RESET --- */
+:root {
+    --color-bg: #0a0a0a;
+    --color-card-bg: #111111;
+    --color-accent: #c8ff00; /* Neon Lime-yellow */
+    --color-white: #ffffff;
+    --color-muted: #888888;
+    --color-outline: #222222;
+    --font-heading: 'Barlow Condensed', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- 2. HEADER NAVIGATION --- */
+#main-header {
+    background-color: rgba(10, 10, 10, 0.95);
+    border-bottom: 2px solid var(--color-outline);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-symbol {
+    width: 28px;
+    height: 28px;
+    background-color: var(--color-accent);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 1.5px;
+    color: var(--color-white);
+}
+
+.brand-name span {
+    color: var(--color-accent);
+}
+
+#nav-menu {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--color-white);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-accent);
+}
+
+/* --- 3. HERO SECTION --- */
+#hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 80px;
+    border-bottom: 2px solid var(--color-outline);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 75% 50%, rgba(200, 255, 0, 0.05), transparent 60%);
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    display: inline-block;
+    padding: 6px 14px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    border-radius: 0px;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+}
+
+.hero-title span {
+    color: var(--color-accent);
+}
+
+.hero-subtitle {
+    color: var(--color-muted);
+    font-size: 18px;
+    margin-bottom: 40px;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.action-btn {
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 14px 36px;
+    transition: all 0.2s ease;
+    border-radius: 0px;
+}
+
+.primary-btn {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: 2px solid var(--color-accent);
+}
+
+.primary-btn:hover {
+    background-color: #d4ff33;
+    border-color: #d4ff33;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--color-white);
+    border: 2px solid var(--color-white);
+}
+
+.secondary-btn:hover {
+    background-color: var(--color-white);
+    color: var(--color-bg);
+}
+
+/* --- 4. FEATURES SECTION --- */
+#features {
+    padding: 100px 0;
+    border-bottom: 2px solid var(--color-outline);
+}
+
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.sub-title {
+    color: var(--color-accent);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.main-heading {
+    font-family: var(--font-heading);
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-outline);
+    padding: 40px 32px;
+    transition: border-color 0.2s ease;
+    border-radius: 0px;
+}
+
+.feature-card:hover {
+    border-color: var(--color-accent);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--color-white);
+}
+
+.card-text {
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+/* --- 5. SPECS SECTION --- */
+#specs {
+    padding: 100px 0;
+}
+
+.specs-box {
+    max-width: 700px;
+    margin: 0 auto;
+    border: 2px solid var(--color-outline);
+    border-radius: 0px;
+}
+
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--color-outline);
+}
+
+.spec-row:last-child {
+    border-bottom: none;
+}
+
+.spec-label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--color-muted);
+}
+
+.spec-val {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-white);
+}
+
+/* --- 6. FOOTER --- */
+#main-footer {
+    border-top: 2px solid var(--color-outline);
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.epitaph {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--color-accent);
+}
+
+.copyright {
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #nav-menu {
+        display: none;
+    }
+    .hero-title {
+        font-size: 38px;
+    }
+    .hero-actions {
+        flex-direction: column;
+    }
+}

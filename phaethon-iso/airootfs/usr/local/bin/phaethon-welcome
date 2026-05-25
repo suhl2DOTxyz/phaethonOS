@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# PHAETHON OS - WELCOME APP EXECUTION LAUNCHER
+# ==============================================================================
+# Bypasses Chromium sandbox restrictions to guarantee successful startup
+# within live session root environments.
+#
+
+exec electron --no-sandbox /usr/share/phaethon-welcome-app/main.js "$@"

@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = linux-cachyos
+
+[Action]
+Depends = mkinitcpio
+Depends = mkinitcpio-archiso
+When = PostTransaction
+Exec = /usr/bin/mkinitcpio -c /etc/mkinitcpio.conf.d/archiso.conf -g /boot/initramfs-linux-cachyos.img -k /boot/vmlinuz-linux-cachyos

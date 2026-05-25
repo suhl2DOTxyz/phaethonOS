@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Install Phaethon OS
+Comment=Launch Calamares OS installer
+Exec=/usr/local/bin/phaethon-calamares
+Icon=/usr/share/phaethon/phaethon-logo.png
+Terminal=false
+StartupNotify=true
+Categories=Qt;System;

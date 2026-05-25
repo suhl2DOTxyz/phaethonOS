@@ -1,0 +1,6 @@
+/* Allow members of wheel group to run Calamares without password prompting */
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("calamares") !== -1 && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});

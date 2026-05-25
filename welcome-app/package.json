@@ -1,0 +1,22 @@
+{
+  "name": "phaethon-welcome-app",
+  "version": "1.0.0",
+  "description": "Phaethon OS first-launch greeting and performance wizard dashboard.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "phaethon",
+    "linux",
+    "welcome-app",
+    "archlinux"
+  ],
+  "author": "Phaethon OS Project Developers",
+  "license": "GPL-3.0",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^30.0.0"
+  }
+}

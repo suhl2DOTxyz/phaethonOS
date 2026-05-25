@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Phaethon OS Welcome
+Comment=Launch Phaethon OS first-launch setup wizard
+Exec=/usr/local/bin/phaethon-welcome
+Icon=/usr/share/phaethon/phaethon-logo.png
+Terminal=false
+StartupNotify=true
+Categories=System;Utility;

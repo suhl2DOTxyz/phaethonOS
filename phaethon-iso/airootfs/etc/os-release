@@ -1,0 +1,12 @@
+NAME="PhaethonOS"
+PRETTY_NAME="PhaethonOS"
+ID=phaethon
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;200;255;0"
+HOME_URL="https://suhl2.xyz/phaethonOS"
+DOCUMENTATION_URL="https://suhl2.xyz/phaethonOS/docs"
+SUPPORT_URL="https://suhl2.xyz/phaethonOS/support"
+BUG_REPORT_URL="https://suhl2.xyz/phaethonOS/bugs"
+PRIVACY_POLICY_URL="https://suhl2.xyz/phaethonOS/privacy"
+LOGO=phaethon-logo

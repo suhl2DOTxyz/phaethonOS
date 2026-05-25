@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Phaethon Init
+Comment=Apply Phaethon theme, wallpaper, and compositor settings
+Exec=/usr/local/bin/phaethon-init.sh
+Terminal=false
+X-KDE-autostart-phase=2
+X-KDE-autostart-after=plasma-desktop

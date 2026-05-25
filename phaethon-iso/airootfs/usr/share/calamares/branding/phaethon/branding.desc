@@ -1,0 +1,32 @@
+---
+componentName: phaethon
+
+welcomeStyleCalamares: true
+
+strings:
+    productName:         PhaethonOS
+    shortProductName:    PhaethonOS
+    version:             1.0.0 Belle
+    shortVersion:        1.0.0
+    versionedName:       PhaethonOS 1.0.0 Belle
+    shortVersionedName:  PhaethonOS 1.0.0
+    bootloaderEntryName: PhaethonOS
+    productUrl:          https://suhl2.xyz/phaethonOS
+    supportUrl:          https://suhl2.xyz/phaethonOS
+    knownIssuesUrl:      https://suhl2.xyz/phaethonOS
+    releaseNotesUrl:     https://suhl2.xyz/phaethonOS
+    donateUrl:           https://suhl2.xyz/phaethonOS
+
+images:
+    productLogo:         "phaethon-logo.png"
+    productIcon:         "phaethon-logo.png"
+    productWelcome:      "phaethon-logo.png"
+
+slideshowAPI: 1
+slideshow:    "show.qml"
+
+style:
+    sidebarBackground:    "#0A0A0A"
+    sidebarText:          "#C8FF00"
+    sidebarTextSelect:    "#FFFFFF"
+    sidebarTextHighlight: "#C8FF00"

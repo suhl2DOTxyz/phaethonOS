@@ -1,0 +1,64 @@
+[Compositing]
+# AnimationSpeed: 1=very fast, higher=slower. 1 gives a sharp, snappy feel.
+AnimationSpeed=1
+Backend=OpenGL
+Enabled=true
+GlPreferBufferSwap=1
+HiddenPreviews=5
+LatencyPolicy=Low
+MaxFPS=0
+
+[Decorations]
+ActiveWindowColor=200,255,0
+BorderRadius=0
+Glow=false
+InactiveWindowColor=136,136,136
+Shadows=false
+TitleAlignment=Left
+
+[Effect-Glide]
+# Glide: sharp scale+fade on window open and close only
+InDuration=150
+OutDuration=120
+TranslationDistance=40
+TranslationDuration=150
+
+[Effect-kwin4_effect_fadingpopups]
+Enabled=true
+
+[Effect-kwin4_effect_login]
+Enabled=true
+
+[Plugins]
+# Only open/close effects enabled — NO movement/resize effects
+blurEnabled=false
+contrastEnabled=true
+# Glide = the snappy scale-fade on open/close (ZZZ-style sharp entry)
+glideEnabled=true
+# Fade for popups and tooltips
+kwin4_effect_fadingpopupsEnabled=true
+kwin4_effect_loginEnabled=true
+# All movement / live-window effects OFF
+fadeEnabled=false
+fadedesktopEnabled=false
+scaleEnabled=false
+slideEnabled=false
+slidebackEnabled=false
+squashEnabled=false
+translucencyEnabled=false
+wobblywindowsEnabled=false
+windowapertureEnabled=false
+zoomEnabled=false
+
+[Windows]
+AutoRaise=false
+DelayFocusInterval=250
+FocusPolicy=FocusFollowsMouse
+
+[org.kde.kdecoration2]
+ButtonsOnLeft=
+ButtonsOnRight=IAX
+CloseOnDoubleclick=false
+DecorationLayoutChecking=false
+library=org.kde.kwin.aurorae
+theme=kwin4_decoration_qml_plastik

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhaethonOS // Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header id="main-header">
+        <div class="header-container">
+            <div id="brand-logo">
+                <span class="logo-symbol"></span>
+                <a href="../index.html" style="text-decoration: none;" class="brand-name"><span>PHAETHON</span>OS</a>
+            </div>
+            <nav id="nav-menu">
+                <a href="../index.html" class="nav-link">HOME //</a>
+                <a href="../wiki/index.html" class="nav-link">WIKI //</a>
+                <a href="../support/index.html" class="nav-link">SUPPORT //</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main style="padding: 140px 24px 80px; max-width: 900px; margin: 0 auto;">
+        <header class="section-header" style="text-align: left; margin-bottom: 40px; border-bottom: 2px solid var(--color-outline); padding-bottom: 20px;">
+            <span class="sub-title">CORE MANUAL //</span>
+            <h1 class="main-heading" style="font-size: 48px;">TECHNICAL DOCUMENTATION</h1>
+        </header>
+
+        <section class="docs-content" style="display: flex; flex-direction: column; gap: 40px;">
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">1. SYSCTL OPTIMIZATION LIMITS //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">PhaethonOS ships with a custom performance sysctl configuration located at <code style="color: var(--color-accent);">/etc/sysctl.d/99-phaethon.conf</code>. It is optimized to secure extreme gaming stability and massive developer task execution:</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    vm.swappiness = 10<br>
+                    vm.max_map_count = 1048576<br>
+                    fs.file-max = 2097152<br>
+                    net.core.somaxconn = 8192
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">2. COMPRESSED MEMORY SWAP CACHE //</h2>
+                <p style="color: var(--color-muted);">PhaethonOS utilizes systemd-zram-generator to create dynamic in-RAM swap compressed modules. ZRAM partitions are automatically configured up to 50% of the host system's physical memory footprint under zstd compression.</p>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">3. SECURITY & NETWORK POLICIES //</h2>
+                <p style="color: var(--color-muted);">Firewalld is pre-activated globally using the Desktop profile to guarantee default secure networking, blocking unsolicited connections while permitting essential local services.</p>
+            </article>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <p class="epitaph">"Though greatly he failed, more greatly he dared." // Ovid</p>
+            <p class="copyright">&copy; 2026 PhaethonOS Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

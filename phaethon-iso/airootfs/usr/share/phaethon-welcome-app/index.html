@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHAETHON OS // FIRST LAUNCH WIZARD</title>
+    <meta name="description" content="Welcome launcher and performance optimization wizard for Phaethon OS - the ultimate high-performance Linux distribution.">
+    <!-- Google Fonts Integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Main Container -->
+    <main id="app-container">
+        
+        <!-- Left Sidebar Navigation -->
+        <nav id="sidebar">
+            <div id="logo-container">
+                <!-- Distro Brand Gold logo -->
+                <div class="logo-star"></div>
+                <h1 id="brand-title">PHAETHON <span>OS</span></h1>
+            </div>
+            
+            <ul id="nav-tabs">
+                <li class="tab-item active" data-tab="welcome" id="tab-welcome">WELCOME // START</li>
+                <li class="tab-item" data-tab="drivers" id="tab-drivers">DRIVERS // GRAPHICS</li>
+                <li class="tab-item" data-tab="gaming" id="tab-gaming">GAMING // SUITE</li>
+                <li class="tab-item" data-tab="developer" id="tab-developer">DEVELOPER // SUITE</li>
+                <li class="tab-item" data-tab="tweaks" id="tab-tweaks">SYSTEM // TWEAKS</li>
+            </ul>
+
+            <footer id="sidebar-footer">
+                <p class="epitaph">"Though greatly he failed, more greatly he dared."</p>
+                <p class="release-ver">CODENAME: BELLE // V1.0.0</p>
+            </footer>
+        </nav>
+
+        <!-- Right Content Panels -->
+        <section id="content-area">
+            
+            <!-- Welcome Panel -->
+            <article class="tab-content active" id="content-welcome">
+                <div class="hero-header">
+                    <h2 class="section-title">THE SON OF HELIOS HAS ASCENDED //</h2>
+                    <p class="hero-subtitle">Welcome to your new, bleeding-edge rolling-release computing environment. Fully configured for maximum performance, minimal latency, and zero friction.</p>
+                    <div class="hero-actions" style="margin-top: 15px; display: flex; gap: 15px;">
+                        <button class="pill-btn primary" id="btn-install-os" style="background-color: #C8FF00; color: #0a0a0a; border-color: #C8FF00; font-weight: bold; padding: 10px 24px; font-size: 14px;">LAUNCH / SYSTEM INSTALLER</button>
+                    </div>
+                </div>
+                
+                <div class="grid-layout">
+                    <section class="card flat-card" id="card-beginner">
+                        <header class="card-header">
+                            <span class="card-tag">BEGINNER //</span>
+                            <h3>NEW TO LINUX?</h3>
+                        </header>
+                        <p>Phaethon OS is built to be intuitive. Everything is pre-configured so you don't need the terminal to have an amazing experience. Your custom software center and Flatpak/Flathub integrations are ready to go.</p>
+                        <button class="pill-btn primary" id="btn-explore-gui">OPEN / APP CENTER</button>
+                    </section>
+
+                    <section class="card flat-card" id="card-performance">
+                        <header class="card-header">
+                            <span class="card-tag">PERFORMANCE //</span>
+                            <h3>GAMER READY</h3>
+                        </header>
+                        <p>CachyOS kernel schedule patches, custom sysctl values, MangoHud frametime diagnostics, GameMode, and Wine dependencies are preloaded. Enable your drivers and jump straight into the action.</p>
+                        <button class="pill-btn secondary" id="btn-jump-gaming">GO / TO GAMING</button>
+                    </section>
+                </div>
+            </article>
+
+            <!-- Drivers Panel -->
+            <article class="tab-content" id="content-drivers">
+                <h2 class="section-title">GRAPHICS & HARDWARE CONFIGURATION //</h2>
+                <p class="section-subtitle">Phaethon automatically detects your GPU hardware. Toggle and configure proprietary drivers below.</p>
+                
+                <div class="card panel-card">
+                    <div class="status-indicator" id="gpu-detect-status">DETECTING GPU HARDWARE...</div>
+                    
+                    <div class="driver-options">
+                        <div class="driver-row" id="row-nvidia">
+                            <div class="driver-info">
+                                <h4>NVIDIA PROPRIETARY STABLE DRIVERS</h4>
+                                <p>Required for RTX features, CUDA compute, and optimal DLSS performance on Nvidia hardware.</p>
+                            </div>
+                            <button class="pill-btn action-btn" id="btn-install-nvidia">INSTALL / NVIDIA</button>
+                        </div>
+                        
+                        <div class="driver-row" id="row-mesa">
+                            <div class="driver-info">
+                                <h4>OPEN-SOURCE MESA STACK (AMD/INTEL)</h4>
+                                <p>Pre-installed. Leveraging Vulkan RADV/Intel drivers with optimized CPU compiler configurations.</p>
+                            </div>
+                            <span class="badge active-badge">ACTIVE / STABLE</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Gaming Panel -->
+            <article class="tab-content" id="content-gaming">
+                <h2 class="section-title">GAMING ENVIRONMENT COMPOSER //</h2>
+                <p class="section-subtitle">Select the high-performance gaming components you wish to deploy. Tap the toggles and execute.</p>
+                
+                <div class="grid-layout three-col">
+                    <div class="card check-card" id="game-steam">
+                        <div class="checkbox-indicator checked"></div>
+                        <h4>STEAM</h4>
+                        <p>Native client pre-configured with Proton compatibility layers.</p>
+                    </div>
+                    
+                    <div class="card check-card" id="game-heroic">
+                        <div class="checkbox-indicator checked"></div>
+                        <h4>HEROIC LAUNCHER</h4>
+                        <p>Play Epic Games, GOG, and Amazon Prime Games natively.</p>
+                    </div>
+
+                    <div class="card check-card" id="game-bottles">
+                        <div class="checkbox-indicator checked"></div>
+                        <h4>BOTTLES</h4>
+                        <p>Run Windows applications and executables in sandboxed environments.</p>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button class="pill-btn primary" id="btn-deploy-gaming">DEPLOY / SELECTED GAMES</button>
+                </div>
+            </article>
+
+            <!-- Developer Panel -->
+            <article class="tab-content" id="content-developer">
+                <h2 class="section-title">DEVELOPER ENVIRONMENT SETUP //</h2>
+                <p class="section-subtitle">Instantly provision compilation toolchains, package runners, and code editors.</p>
+                
+                <div class="grid-layout">
+                    <section class="card panel-card">
+                        <h3>DOCKER VIRTUALIZATION ENGINE</h3>
+                        <p>Includes Docker daemon and docker-compose orchestration tool. Runs automatically in background.</p>
+                        <button class="pill-btn action-btn" id="btn-enable-docker">ENABLE / DOCKER</button>
+                    </section>
+
+                    <section class="card panel-card">
+                        <h3>VISUAL STUDIO CODE IDE</h3>
+                        <p>Deploy the high-performance, extension-capable programming environment. Standard VS Code bin package.</p>
+                        <button class="pill-btn action-btn" id="btn-install-vscode">INSTALL / VS CODE</button>
+                    </section>
+                </div>
+            </article>
+
+            <!-- Tweaks Panel -->
+            <article class="tab-content" id="content-tweaks">
+                <h2 class="section-title">PERFORMANCE & SECURITY TWEAKS //</h2>
+                <p class="section-subtitle">Configure advanced low-level kernel parameters and network defenses instantly.</p>
+                
+                <div class="tweaks-list">
+                    <div class="tweak-item">
+                        <div class="tweak-desc">
+                            <h4>ZRAM SYSTEM COMPRESSION (50% RAM)</h4>
+                            <p>Enables ultra-fast compressed RAM swap paging, decreasing latency on compiles and gaming loads.</p>
+                        </div>
+                        <span class="badge active-badge">ENABLED</span>
+                    </div>
+
+                    <div class="tweak-item">
+                        <div class="tweak-desc">
+                            <h4>ANANICY PROCESS PRIORITY DEMON</h4>
+                            <p>Actively schedules frame-critical game tasks with higher nice values to prevent micro-stuttering.</p>
+                        </div>
+                        <span class="badge active-badge">ENABLED</span>
+                    </div>
+
+                    <div class="tweak-item">
+                        <div class="tweak-desc">
+                            <h4>FIREWALLD NETWORK SHIELD</h4>
+                            <p>Deploys robust ingress filters to block unauthorized socket probes on public networks.</p>
+                        </div>
+                        <span class="badge active-badge">ENABLED</span>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <!-- Code logic injection -->
+    <script src="app.js"></script>
+</body>
+</html>

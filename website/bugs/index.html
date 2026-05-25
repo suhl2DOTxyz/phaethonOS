@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhaethonOS // Bug Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header id="main-header">
+        <div class="header-container">
+            <div id="brand-logo">
+                <span class="logo-symbol"></span>
+                <a href="../index.html" style="text-decoration: none;" class="brand-name"><span>PHAETHON</span>OS</a>
+            </div>
+            <nav id="nav-menu">
+                <a href="../index.html" class="nav-link">HOME //</a>
+                <a href="../wiki/index.html" class="nav-link">WIKI //</a>
+                <a href="../docs/index.html" class="nav-link">DOCS //</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main style="padding: 140px 24px 80px; max-width: 700px; margin: 0 auto;">
+        <header class="section-header" style="text-align: left; margin-bottom: 40px; border-bottom: 2px solid var(--color-outline); padding-bottom: 20px;">
+            <span class="sub-title">TELEMETRY & LOGS //</span>
+            <h1 class="main-heading" style="font-size: 48px;">BUG REPORT PANEL</h1>
+        </header>
+
+        <section class="bug-form-section" style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 40px; border-radius: 0px;">
+            <form id="bug-report-form" onsubmit="event.preventDefault(); alert('Telemetry and logs submitted successfully to suhl2.xyz!');" style="display: flex; flex-direction: column; gap: 24px;">
+                <div>
+                    <label style="display: block; font-family: var(--font-heading); font-weight: 700; font-size: 14px; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--color-accent);">ISSUE TITLE //</label>
+                    <input type="text" placeholder="e.g. GPU Driver mismatch under Wayland compositor" required style="width: 100%; background: var(--color-bg); border: 2px solid var(--color-outline); padding: 12px 16px; color: #fff; font-family: var(--font-body); border-radius: 0px;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-family: var(--font-heading); font-weight: 700; font-size: 14px; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--color-accent);">COMPONENT TYPE //</label>
+                    <select style="width: 100%; background: var(--color-bg); border: 2px solid var(--color-outline); padding: 12px 16px; color: #fff; font-family: var(--font-body); border-radius: 0px;">
+                        <option>Kernel & CPU Scheduler // BORE</option>
+                        <option>KWin Window Decoration // Plastik</option>
+                        <option>Calamares OS Installer // ZZZ themed</option>
+                        <option>Fish Shell & Fastfetch Logo</option>
+                        <option>Other / Telemetry Core</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; font-family: var(--font-heading); font-weight: 700; font-size: 14px; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--color-accent);">DIAGNOSTIC DETAILED SYSTEM REPORT //</label>
+                    <textarea rows="6" placeholder="Describe the steps to replicate the crash, include stderr fastfetch dumps or system logs..." required style="width: 100%; background: var(--color-bg); border: 2px solid var(--color-outline); padding: 12px 16px; color: #fff; font-family: var(--font-body); border-radius: 0px; resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="action-btn primary-btn" style="border: none; cursor: pointer; text-align: center; width: 100%;">SUBMIT TELEMETRY CORE //</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <p class="epitaph">"Though greatly he failed, more greatly he dared." // Ovid</p>
+            <p class="copyright">&copy; 2026 PhaethonOS Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

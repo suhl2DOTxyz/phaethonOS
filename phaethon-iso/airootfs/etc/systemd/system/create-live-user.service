@@ -1,0 +1,13 @@
+[Unit]
+Description=Create live user for Phaethon OS
+Before=sddm.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c 'id -u live &>/dev/null || useradd -m -G wheel,audio,video,storage,power,input -s /usr/bin/fish live'
+ExecStart=/usr/bin/bash -c 'echo "live:live" | chpasswd 2>/dev/null; passwd -d live 2>/dev/null'
+
+[Install]
+WantedBy=multi-user.target

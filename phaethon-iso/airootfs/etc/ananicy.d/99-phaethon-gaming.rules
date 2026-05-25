@@ -1,0 +1,34 @@
+# ==============================================================================
+# PHAETHON OS - ANANICY PROCESS PRIORITIZATION RULES
+# ==============================================================================
+# Shipped at: /etc/ananicy.d/99-phaethon-gaming.rules
+# Defines real-time and priority scheduling rules for ananicy-cpp. Ensures that
+# gaming processes remain in low-latency mode, while heavy developer compiling
+# or virtualization threads run efficiently in background profiles without lagging the UI.
+#
+
+# --- 1. GAMING LAUNCHERS & ENGINES (High CPU, Real-Time Priority) ---
+{ "name": "steam", "type": "Game" }
+{ "name": "steamwebhelper", "type": "LowLatency" }
+{ "name": "lutris", "type": "Game" }
+{ "name": "heroic", "type": "Game" }
+{ "name": "bottles", "type": "Game" }
+{ "name": "wine-preloader", "type": "Game" }
+{ "name": "wine64-preloader", "type": "Game" }
+{ "name": "gamescope", "type": "Realtime" }
+{ "name": "mangohud", "type": "LowLatency" }
+
+# --- 2. DEVELOPMENT ENVIRONMENTS (CPU Bound background priority) ---
+{ "name": "code", "type": "BG_CPUBound" }
+{ "name": "docker-compose", "type": "Background" }
+{ "name": "dockerd", "type": "Background" }
+{ "name": "containerd", "type": "Background" }
+{ "name": "node", "type": "BG_CPUBound" }
+{ "name": "cargo", "type": "BG_CPUBound" }
+{ "name": "ccache", "type": "Background" }
+
+# --- 3. COMMUNICATIONS & DESKTOP SUITES (Standard / Low latency) ---
+{ "name": "discord", "type": "Chat" }
+{ "name": "thunderbird", "type": "Mail" }
+{ "name": "firefox", "type": "WebBrowser" }
+{ "name": "vlc", "type": "Player" }

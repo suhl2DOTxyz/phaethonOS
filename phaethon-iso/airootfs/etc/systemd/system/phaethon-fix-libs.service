@@ -1,0 +1,11 @@
+[Unit]
+Description=Phaethon OS - Fix library symlinks
+Before=calamares.desktop
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/phaethon-fix-libs.sh
+
+[Install]
+WantedBy=multi-user.target

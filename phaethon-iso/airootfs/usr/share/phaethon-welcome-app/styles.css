@@ -1,0 +1,464 @@
+/* ==============================================================================
+# PHAETHON OS - WELCOME launcher CSS (styles.css)
+# ==============================================================================
+# Styles the first-launch setup application. Implements a high-contrast,
+# perfectly flat, graphic-design aesthetic based directly on the Zenless Zone
+# Zero official website UI: sharp corners, bold condensed tracking, neon lime
+# active highlights, and solid white surface cards.
+*/
+
+:root {
+    --bg-color: #0a0a0a;
+    --accent-color: #C8FF00;
+    --surface-color: #FFFFFF;
+    --text-on-dark: #FFFFFF;
+    --text-on-light: #0a0a0a;
+    --text-muted: #888888;
+    --error-color: #FF4444;
+    --gold-color: #D4AF37;
+    
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --border-width: 3px;
+    --transition-snappy: 0.1s ease-in-out;
+}
+
+/* --- 1. RESET AND CORE STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-on-dark);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Custom flat scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border: 2px solid var(--bg-color);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* --- 2. LAYOUT STRUCTURING --- */
+#app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    border: var(--border-width) solid var(--text-on-dark);
+}
+
+/* Left Sidebar Navigation */
+#sidebar {
+    width: 320px;
+    height: 100%;
+    border-right: var(--border-width) solid var(--text-on-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    background-color: var(--bg-color);
+}
+
+#logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+/* Premium flat brand star design */
+.logo-star {
+    width: 32px;
+    height: 32px;
+    background-color: var(--gold-color);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+#brand-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-on-dark);
+}
+
+#brand-title span {
+    color: var(--accent-color);
+}
+
+#nav-tabs {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tab-item {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 12px 20px;
+    border: var(--border-width) solid transparent;
+    cursor: pointer;
+    transition: var(--transition-snappy);
+    position: relative;
+}
+
+/* Slash Motif separator on hover */
+.tab-item::after {
+    content: "/";
+    position: absolute;
+    right: 15px;
+    color: var(--accent-color);
+    opacity: 0;
+    transition: var(--transition-snappy);
+}
+
+.tab-item:hover {
+    color: var(--text-on-dark);
+    border: var(--border-width) solid var(--text-on-dark);
+}
+
+.tab-item:hover::after {
+    opacity: 1;
+}
+
+.tab-item.active {
+    color: var(--text-on-light);
+    background-color: var(--accent-color);
+    border: var(--border-width) solid var(--accent-color);
+}
+
+.tab-item.active::after {
+    color: var(--text-on-light);
+    opacity: 1;
+}
+
+#sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.epitaph {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--gold-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
+}
+
+.release-ver {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+}
+
+/* Right Content Area */
+#content-area {
+    flex: 1;
+    height: 100%;
+    padding: 50px;
+    overflow-y: auto;
+    background-image: linear-gradient(45deg, #111111 25%, transparent 25%), 
+                      linear-gradient(-45deg, #111111 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, #111111 75%), 
+                      linear-gradient(-45deg, transparent 75%, #111111 75%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+}
+
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 30px;
+    animation: fadeIn var(--transition-snappy);
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 3. GRAPHIC COMPONENTS & TITLES --- */
+.section-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+.section-subtitle, .hero-subtitle {
+    color: var(--text-on-dark);
+    max-width: 800px;
+    font-size: 16px;
+}
+
+.hero-subtitle {
+    margin-top: 10px;
+}
+
+/* High Contrast Pure-White Surface Card */
+.card {
+    background-color: var(--surface-color);
+    color: var(--text-on-light);
+    border: var(--border-width) solid var(--text-on-dark);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    transition: var(--transition-snappy);
+}
+
+.flat-card {
+    min-height: 250px;
+    justify-content: space-between;
+}
+
+.card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px var(--accent-color);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-tag {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.card h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card p {
+    font-size: 13px;
+    color: #333333;
+}
+
+/* Grid Layouts */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.grid-layout.three-col {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* --- 4. ZZZ BUTTONS & ACTIONS (Pill/Rectangle with hard edges) --- */
+.pill-btn {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 12px 25px;
+    border: var(--border-width) solid var(--text-on-light);
+    background-color: transparent;
+    color: var(--text-on-light);
+    cursor: pointer;
+    transition: var(--transition-snappy);
+    width: fit-content;
+    border-radius: 0px; /* Square shape with hard borders */
+}
+
+.pill-btn.primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-on-light);
+}
+
+.pill-btn.primary:hover {
+    background-color: var(--bg-color);
+    border-color: var(--text-on-dark);
+    color: var(--text-on-dark);
+}
+
+.pill-btn.secondary {
+    background-color: var(--text-on-light);
+    color: var(--text-on-dark);
+    border-color: var(--text-on-light);
+}
+
+.pill-btn.secondary:hover {
+    background-color: var(--accent-color);
+    color: var(--text-on-light);
+    border-color: var(--accent-color);
+}
+
+/* Dynamic Action buttons inside cards */
+.action-btn {
+    border-color: var(--text-on-light);
+    background-color: transparent;
+}
+
+.action-btn:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-on-light);
+}
+
+/* --- 5. DRIVER & HARDWARE OPTIONS (Card/Panels) --- */
+.panel-card {
+    width: 100%;
+}
+
+.status-indicator {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    padding: 12px;
+    background-color: var(--bg-color);
+    color: var(--accent-color);
+    border-left: 5px solid var(--accent-color);
+}
+
+.driver-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.driver-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0px;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.driver-row:last-child {
+    border-bottom: none;
+}
+
+.driver-info h4 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.driver-info p {
+    font-size: 12px;
+    color: #666666;
+}
+
+.badge {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 6px 12px;
+    border-radius: 0px;
+}
+
+.active-badge {
+    background-color: var(--accent-color);
+    color: var(--text-on-light);
+    border: 2px solid var(--accent-color);
+}
+
+/* --- 6. CHECKBOX CARDS FOR SYSTEM DEPLOY --- */
+.check-card {
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.checkbox-indicator {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--text-on-light);
+    margin-bottom: 15px;
+    transition: var(--transition-snappy);
+}
+
+.checkbox-indicator.checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.check-card h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.action-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* --- 7. TWEAKS PANEL LIST --- */
+.tweaks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tweak-item {
+    background-color: var(--surface-color);
+    color: var(--text-on-light);
+    border: var(--border-width) solid var(--text-on-dark);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tweak-desc h4 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}

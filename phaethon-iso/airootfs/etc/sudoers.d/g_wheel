@@ -1,0 +1,3 @@
+# Allow passwordless privilege escalation for all users in the wheel group
+# in the live environment (critical for running pacman, yay, paru, systemctl, etc.)
+%wheel ALL=(ALL:ALL) NOPASSWD: ALL

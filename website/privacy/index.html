@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhaethonOS // Privacy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header id="main-header">
+        <div class="header-container">
+            <div id="brand-logo">
+                <span class="logo-symbol"></span>
+                <a href="../index.html" style="text-decoration: none;" class="brand-name"><span>PHAETHON</span>OS</a>
+            </div>
+            <nav id="nav-menu">
+                <a href="../index.html" class="nav-link">HOME //</a>
+                <a href="../wiki/index.html" class="nav-link">WIKI //</a>
+                <a href="../docs/index.html" class="nav-link">DOCS //</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main style="padding: 140px 24px 80px; max-width: 900px; margin: 0 auto;">
+        <header class="section-header" style="text-align: left; margin-bottom: 40px; border-bottom: 2px solid var(--color-outline); padding-bottom: 20px;">
+            <span class="sub-title">DATA ETHICS //</span>
+            <h1 class="main-heading" style="font-size: 48px;">PRIVACY POLICY</h1>
+        </header>
+
+        <section class="privacy-content" style="display: flex; flex-direction: column; gap: 40px; color: var(--color-muted); font-size: 15px; line-height: 1.7;">
+            <article class="privacy-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">1. ZERO TELEMETRY COMPLIANCE //</h2>
+                <p>PhaethonOS operates under a strict Zero-Telemetry policy. We do not integrate data collection hooks, user behavior monitoring trackers, or remote telemetry scripts inside the live ISO desktop environment or inside the compiled installations. Your operating system, execution logs, and application usages remain strictly local to your computing devices.</p>
+            </article>
+
+            <article class="privacy-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">2. PACKAGE SYNCHRONIZATION //</h2>
+                <p>All package operations, updates, and kernel compiles leverage direct secure connections to standard official Arch Linux mirrors, CachyOS repository mirrors, or our custom distribution repository servers. These processes log standard network interactions required for updating file signatures and database checksums, and do not track individual users.</p>
+            </article>
+
+            <article class="privacy-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">3. ENCRYPTION PROTOCOLS //</h2>
+                <p>The Calamares installation script supports advanced full-disk LUKS partitions. We strongly advise developers, system administrators, and privacy advocates to enable LUKS system volumes during installer sequence steps to ensure files and credentials remain secure when system volumes are unmounted.</p>
+            </article>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <p class="epitaph">"Though greatly he failed, more greatly he dared." // Ovid</p>
+            <p class="copyright">&copy; 2026 PhaethonOS Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

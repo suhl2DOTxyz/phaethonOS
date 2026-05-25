@@ -1,0 +1,135 @@
+/* ==============================================================================
+# PHAETHON OS - CALAMARES QSS STYLE SHEET (stylesheet.qss)
+# ==============================================================================
+# Custom Qt style sheet overriding the visual presentation of the Calamares
+# graphical installer. Styled completely in the Zenless Zone Zero aesthetic:
+# perfectly flat surfaces, pure black background (#0a0a0a), sharp square corners
+# (border-radius: 0px), and intense neon-lime borders/highlights (#C8FF00).
+*/
+
+/* --- 1. GLOBAL ROOT WINDOW & CONTAINERS --- */
+QWidget {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-family: "Inter", "sans-serif";
+    font-size: 13px;
+    border-radius: 0px; /* Sharp corners everywhere */
+}
+
+/* Sidebar navigation styling */
+QTreeView, QListView {
+    background-color: #0a0a0a;
+    color: #888888;
+    border: none;
+    font-family: "Barlow Condensed", "sans-serif";
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+QTreeView::item:selected, QListView::item:selected {
+    background-color: #C8FF00;
+    color: #0a0a0a;
+    border: 2px solid #C8FF00;
+}
+
+/* --- 2. TYPOGRAPHY OVERRIDES --- */
+QLabel {
+    color: #ffffff;
+}
+
+QLabel#titleLabel {
+    font-family: "Barlow Condensed", "sans-serif";
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #C8FF00; /* Neon Lime active titles */
+    border-bottom: 2px solid #C8FF00;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+QLabel#taglineLabel {
+    font-family: "Barlow Condensed", "sans-serif";
+    font-size: 14px;
+    font-style: italic;
+    color: #ffffff;
+    padding: 5px;
+}
+
+/* --- 3. HARD-EDGED BUTTON STYLING (ZZZ Pill/Rectangle) --- */
+QPushButton {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 0px;
+    padding: 6px 20px;
+    font-family: "Barlow Condensed", "sans-serif";
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+QPushButton:hover {
+    background-color: #C8FF00;
+    color: #0a0a0a;
+    border: 2px solid #C8FF00;
+}
+
+QPushButton:pressed {
+    background-color: #ffffff;
+    color: #0a0a0a;
+    border: 2px solid #ffffff;
+}
+
+QPushButton:disabled {
+    background-color: #1a1a1a;
+    color: #555555;
+    border: 2px solid #555555;
+}
+
+/* --- 4. DATA FIELDS, INPUTS & DROPDOWNS --- */
+QLineEdit, QComboBox, QSpinBox {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    border: 2px solid #888888;
+    border-radius: 0px;
+    padding: 4px 8px;
+}
+
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border: 2px solid #C8FF00;
+}
+
+QComboBox::drop-down {
+    border: none;
+    background-color: #1a1a1a;
+}
+
+/* --- 5. PROGRESS BARS (Sleek flat line) --- */
+QProgressBar {
+    border: 2px solid #ffffff;
+    background-color: #0a0a0a;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+QProgressBar::chunk {
+    background-color: #C8FF00;
+    width: 10px;
+    margin: 0.5px;
+}
+
+/* --- 6. CHECKBOXES AND RADIO BUTTONS --- */
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    background: #0a0a0a;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #C8FF00;
+    border: 2px solid #C8FF00;
+}

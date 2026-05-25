@@ -1,0 +1,31 @@
+# Maintainer: Phaethon OS Project Developers <dev@phaethonos.org>
+pkgname=phaethon-welcome-app
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="First launch setup wizard and performance dashboard for Phaethon OS"
+arch=('any')
+url="https://phaethonos.org"
+license=('GPL3')
+depends=('electron')
+makedepends=()
+source=('welcome-app/') # Pulls source files from local welcome-app folder
+sha256sums=('SKIP')     # Local builds bypass checksum validation
+
+package() {
+    # Establish targets
+    mkdir -p "${pkgdir}/usr/share/phaethon-welcome-app"
+    mkdir -p "${pkgdir}/usr/bin"
+    
+    # Copy code assets
+    cp -r "${srcdir}/welcome-app/"* "${pkgdir}/usr/share/phaethon-welcome-app/"
+    
+    # Write wrapper runner binary launcher
+    cat <<EOF > "${pkgdir}/usr/bin/phaethon-welcome"
+#!/usr/bin/env bash
+# Wrapper execution hook to launch Welcome app within system-installed Electron wrapper
+electron /usr/share/phaethon-welcome-app/index.html "\$@"
+EOF
+    
+    # Grant execute privileges
+    chmod +x "${pkgdir}/usr/bin/phaethon-welcome"
+}
