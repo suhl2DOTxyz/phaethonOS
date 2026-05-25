@@ -6,10 +6,14 @@
 # and working build directories. Requires root permissions.
 #
 
-export COLOR_ACCENT="\e[38;2;200;255;0m" # Neon Lime-yellow
-export COLOR_ERROR="\e[38;2;255;68;68m"   # Danger Red
-export COLOR_WHITE="\e[38;2;255;255;255m"
-export COLOR_RESET="\e[0m"
+COLOR_ACCENT="\e[38;2;200;255;0m"
+COLOR_ERROR="\e[38;2;255;68;68m"
+COLOR_WHITE="\e[38;2;255;255;255m"
+COLOR_RESET="\e[0m"
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+WORK_DIR="${SCRIPT_DIR}/build_work"
+OUT_DIR="${SCRIPT_DIR}/build_out"
 
 # Header
 echo -e "${COLOR_ACCENT}         P H A E T H O N   O S   -   C L E A N E R${COLOR_RESET}"
@@ -19,10 +23,6 @@ if [[ $EUID -ne 0 ]]; then
    echo -e "${COLOR_ERROR}[ERROR] This clean tool must be executed with root permissions (sudo).${COLOR_RESET}"
    exit 1
 fi
-
-WORKSPACE_DIR="/home/suhl2/Documents/PhaethonOS"
-WORK_DIR="${WORKSPACE_DIR}/build_work"
-OUT_DIR="${WORKSPACE_DIR}/build_out"
 
 echo -e "${COLOR_ACCENT}[+] Step 1: Checking for mounted images and active systems...${COLOR_RESET}"
 
