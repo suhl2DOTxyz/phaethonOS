@@ -9,6 +9,7 @@ jobs:
 
     container:
       image: archlinux:latest
+      options: --privileged
 
     steps:
       - name: Initialize pacman keyring
