@@ -1,0 +1,32 @@
+name: Build Phaethon OS ISO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git base-devel archiso squashfs-tools dosfstools grub mtools xorriso
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Make build script executable
+        run: chmod +x build-iso.sh
+
+      - name: Run ISO build
+        run: ./build-iso.sh
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: phaethon-os-iso
+          path: "*.iso"
