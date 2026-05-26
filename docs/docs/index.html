@@ -43,16 +43,119 @@
                     fs.file-max = 2097152<br>
                     net.core.somaxconn = 8192
                 </div>
+                <p style="color: var(--color-muted); margin-top: 12px;">To apply changes after editing the file: <code style="color: var(--color-accent);">sudo sysctl --system</code></p>
             </article>
 
             <article class="docs-section">
                 <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">2. COMPRESSED MEMORY SWAP CACHE //</h2>
-                <p style="color: var(--color-muted);">PhaethonOS utilizes systemd-zram-generator to create dynamic in-RAM swap compressed modules. ZRAM partitions are automatically configured up to 50% of the host system's physical memory footprint under zstd compression.</p>
+                <p style="color: var(--color-muted);">PhaethonOS utilizes systemd-zram-generator to create dynamic in-RAM swap compressed modules. ZRAM partitions are automatically configured up to 50% of the host system's physical memory footprint under zstd compression. Check current ZRAM status with <code style="color: var(--color-accent);">zramctl</code>.</p>
             </article>
 
             <article class="docs-section">
                 <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">3. SECURITY & NETWORK POLICIES //</h2>
-                <p style="color: var(--color-muted);">Firewalld is pre-activated globally using the Desktop profile to guarantee default secure networking, blocking unsolicited connections while permitting essential local services.</p>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Firewalld is pre-activated globally using the Desktop profile to guarantee default secure networking, blocking unsolicited connections while permitting essential local services.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Check firewalld status<br>
+                    sudo firewall-cmd --state<br><br>
+                    # Allow a service (e.g. SSH)<br>
+                    sudo firewall-cmd --permanent --add-service=ssh<br>
+                    sudo firewall-cmd --reload
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">4. PACKAGE MANAGEMENT //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">PhaethonOS includes pacman, yay, and paru for package management. The CachyOS repository provides optimized binaries for Intel and AMD hardware.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Update all packages<br>
+                    sudo pacman -Syu<br><br>
+                    # Search for a package<br>
+                    pacman -Ss &lt;keyword&gt;<br><br>
+                    # Install from AUR<br>
+                    yay -S &lt;package&gt;<br><br>
+                    # Remove a package and its dependencies<br>
+                    sudo pacman -Rns &lt;package&gt;<br><br>
+                    # List explicitly installed packages<br>
+                    pacman -Qe
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">5. BTRFS SNAPSHOTS WITH SNAPPER //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Snapper is preconfigured to take automatic snapshots before and after pacman transactions. Snapshots are stored under <code style="color: var(--color-accent);">/.snapshots</code>.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # List snapshots<br>
+                    sudo snapper list<br><br>
+                    # View snapshot differences<br>
+                    sudo snapper diff 10..11<br><br>
+                    # Restore a snapshot<br>
+                    sudo snapper undochange 10..0<br><br>
+                    # Create a manual snapshot<br>
+                    sudo snapper create -d "before-update"
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">6. GRUB BOOTLOADER RECOVERY //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">If the system fails to boot after an update, you can regenerate the GRUB configuration or reinstall the bootloader from the live ISO.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Regenerate GRUB config<br>
+                    sudo grub-mkconfig -o /boot/grub/grub.cfg<br><br>
+                    # Reinstall GRUB (UEFI)<br>
+                    sudo grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=PhaethonOS
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">7. NETWORK MANAGEMENT //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">NetworkManager handles both wired and wireless connections. The KDE Plasma applet provides a GUI, or use the command line.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # List available networks<br>
+                    nmcli dev wifi list<br><br>
+                    # Connect to a Wi-Fi network<br>
+                    nmcli dev wifi connect "SSID" password "password"<br><br>
+                    # Show connection status<br>
+                    nmcli connection show
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">8. DISPLAY SERVER SWITCHING //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">PhaethonOS defaults to Wayland, but you can switch to X11 if an application requires it.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Switch to X11 for the current SDDM session<br>
+                    # Select "Plasma (X11)" from the session menu at login<br><br>
+                    # Set X11 as default<br>
+                    sudo sed -i 's/Wayland/X11/' /etc/sddm.conf.d/kde_settings.conf
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">9. CACHYOS KERNEL & SCHEDULER //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">PhaethonOS uses the linux-cachyos kernel with the BORE scheduler by default. You can switch schedulers at boot by editing the kernel command line.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Available schedulers (add to GRUB cmdline):<br>
+                    #   sched=bore     - BORE (default, gaming-optimized)<br>
+                    #   sched=eevdf    - EEVDF (fair scheduling)<br>
+                    #   sched=cfs      - CFS (legacy)<br><br>
+                    # Check current scheduler<br>
+                    cat /sys/kernel/debug/sched/preempt
+                </div>
+            </article>
+
+            <article class="docs-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">10. SYSTEMD SERVICES & LOGS //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Essential commands for managing services and inspecting system logs.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # View service status<br>
+                    systemctl status &lt;service&gt;<br><br>
+                    # Enable a service at boot<br>
+                    sudo systemctl enable &lt;service&gt;<br><br>
+                    # Follow live logs<br>
+                    journalctl -f -u &lt;service&gt;<br><br>
+                    # View kernel ring buffer<br>
+                    dmesg -w
+                </div>
             </article>
         </section>
     </main>

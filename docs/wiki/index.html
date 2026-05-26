@@ -37,7 +37,7 @@
             <article class="wiki-section">
                 <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">1. LIVE SESSION INSTALLATION //</h2>
                 <p style="color: var(--color-muted); margin-bottom: 16px;">PhaethonOS boots directly into a Wayland-enabled Live Environment and automatically runs the ZZZ-themed Calamares installer on startup. Follow the wizard configuration panels to target your drive.</p>
-                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px;">
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
                     # Manual Calamares startup check:<br>
                     /usr/local/bin/phaethon-calamares
                 </div>
@@ -51,6 +51,102 @@
             <article class="wiki-section">
                 <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">3. SHELL OPTIMIZATION //</h2>
                 <p style="color: var(--color-muted); margin-bottom: 16px;">The default user shell is preloaded with Fish. Launching a terminal triggers the distro diagnostics module using fastfetch. Custom alias configurations are mapped in <code style="color: var(--color-accent);">~/.config/fish/config.fish</code>.</p>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">4. POST-INSTALLATION SETUP //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">After installation, update all packages and configure your system:</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Update everything<br>
+                    sudo pacman -Syu<br><br>
+                    # Install AUR helper updates<br>
+                    yay -Syu<br><br>
+                    # Enable Firewalld if not running<br>
+                    sudo systemctl enable --now firewalld<br><br>
+                    # Configure snapper snapshots<br>
+                    sudo snapper -c root set-config TIMELINE_CREATE=yes
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">5. FILESYSTEM LAYOUT //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">The default installation uses Btrfs with subvolumes for snapshot management:</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    @          - / (root filesystem)<br>
+                    @home      - /home<br>
+                    @snapshots - /.snapshots (snapper)<br>
+                    @var_log   - /var/log<br>
+                    @swap      - /swap (swap file on Btrfs)
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">6. TROUBLESHOOTING //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Common issues and their solutions:</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # GRUB shows no theme<br>
+                    # Reinstall grub and regenerate config<br>
+                    sudo grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=PhaethonOS<br>
+                    sudo grub-mkconfig -o /boot/grub/grub.cfg<br><br>
+                    # Network not working<br>
+                    sudo systemctl restart NetworkManager<br><br>
+                    # Calamares won't launch in live ISO<br>
+                    /usr/local/bin/phaethon-calamares
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">7. STEAM & GAMING //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">PhaethonOS includes Steam, Lutris, MangoHud, and GameMode pre-installed with 32-bit library support.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Enable GameMode per-game<br>
+                    gamemoderun %command%<br><br>
+                    # Toggle MangoHud (in-game overlay)<br>
+                    # Press Shift+F12 (default)<br><br>
+                    # Install Proton GE for Steam<br>
+                    yay -S proton-ge-custom-bin
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">8. AUR HELPERS //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Both yay and paru are pre-installed. Paru is recommended for its sandboxing and cleaner output.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Search and install with yay<br>
+                    yay &lt;package&gt;<br><br>
+                    # Search and install with paru<br>
+                    paru &lt;package&gt;<br><br>
+                    # Update AUR packages only<br>
+                    yay -Sua<br><br>
+                    # Clean build cache<br>
+                    yay -Sc
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">9. KERNEL MANAGEMENT //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Multiple kernels can be installed alongside the default linux-cachyos kernel.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Install LTS kernel as fallback<br>
+                    sudo pacman -S linux-cachyos-lts<br><br>
+                    # List installed kernels<br>
+                    pacman -Qs "^linux" | grep "^local"<br><br>
+                    # Remove old kernels<br>
+                    sudo pacman -Rns linux-cachyos-lts
+                </div>
+            </article>
+
+            <article class="wiki-section">
+                <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-accent); margin-bottom: 16px; border-bottom: 1px solid var(--color-outline); padding-bottom: 8px;">10. BACKUP & RESTORE //</h2>
+                <p style="color: var(--color-muted); margin-bottom: 12px;">Beyond snapper snapshots, use rsync for manual backups of critical directories.</p>
+                <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-outline); padding: 20px; font-family: monospace; font-size: 14px; color: #fff; line-height: 1.5;">
+                    # Backup home directory to external drive<br>
+                    rsync -avz --progress /home/ /mnt/backup/home/<br><br>
+                    # Backup package list<br>
+                    pacman -Qqe > ~/pkglist.txt<br><br>
+                    # Restore packages from list<br>
+                    sudo pacman -S --needed - < ~/pkglist.txt
+                </div>
             </article>
         </section>
     </main>
