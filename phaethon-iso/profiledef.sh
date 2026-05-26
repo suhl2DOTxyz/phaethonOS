@@ -11,7 +11,7 @@
 
 iso_name="phaethon-os"
 iso_label="PHAETHON_BELLE"
-iso_publisher="PhaethonOS Project <https://suhl2.xyz/phaethonOS>"
+iso_publisher="PhaethonOS Project <https://phaethon.suhl2.xyz>"
 iso_application="PhaethonOS Live/Installation System"
 iso_version="v1.0.0-Belle" # Codename: Belle (v1.x)
 arch="x86_64"
