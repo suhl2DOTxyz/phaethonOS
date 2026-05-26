@@ -96,6 +96,11 @@ sudo dd if=build_out/phaethon-os-v1.0.0-Belle-x86_64.iso of=/dev/sdX bs=4M statu
 # Just copy the ISO to your Ventoy drive.
 ```
 
+## Community
+
+- **Discord**: [https://discord.gg/FhY3qDh4gW](https://discord.gg/FhY3qDh4gW)
+- **Bug Reports**: [GitHub Issues](https://github.com/suhl2DOTxyz/phaethonOS/issues)
+
 ## License
 
 See [LICENSE](LICENSE).
