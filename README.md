@@ -47,6 +47,10 @@ If you just want to rebuild without running the full clean script:
 sudo mkarchiso -v -w build_work -o build_out phaethon-iso/
 ```
 
+## Using GitHub Actions to build
+
+If you'd like to build the ISO yet do not have an Arch Linux machine (or simply do not want to clone the repo and build), you can go to the Actions page of this repo and click "Build Phaethon OS ISO" and run the workflow. If this fails, try forking the repo.
+
 ## Clean Build Artifacts
 
 ```bash
