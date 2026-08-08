@@ -1,5 +1,5 @@
 # Phaethon OS
-> [WARNING!]
+> [!WARNING]
 > This project is barely progressed on anymore... this Linux distro shouldn't be used as a daily driver (yet). If you really want to use it, please consider using a virtual machine. Please contribute to this. Pretty please with possibly 2 cherries on top. Hi lol.
 
 *"Though greatly he failed, more greatly he dared."*
