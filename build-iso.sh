@@ -87,6 +87,17 @@ else
     exit 1
 fi
 
+# Keep the live filesystem's copy of the GRUB theme in sync with the ISO's.
+# phaethon-iso/grub/themes/phaethon is the single source of truth: mkarchiso
+# copies it to /boot/grub/themes on the ISO for the live boot menu, and this
+# copy lands in the live root at /usr/share/grub/themes so Calamares
+# (shellprocess@before-online) can install it onto the target system.
+echo -e "${COLOR_MUTED}[i] Syncing GRUB theme to filesystem overlay...${COLOR_RESET}"
+mkdir -p "${PROFILE_DIR}/airootfs/usr/share/grub/themes"
+rm -rf "${PROFILE_DIR}/airootfs/usr/share/grub/themes/phaethon"
+cp -aT "${PROFILE_DIR}/grub/themes/phaethon" "${PROFILE_DIR}/airootfs/usr/share/grub/themes/phaethon"
+echo -e "${COLOR_WHITE}[✔] GRUB theme synchronized.${COLOR_RESET}"
+
 # Sync latest welcome-app source files to filesystem overlay
 echo -e "${COLOR_MUTED}[i] Syncing Welcome App assets to filesystem overlay...${COLOR_RESET}"
 mkdir -p "${PROFILE_DIR}/airootfs/usr/share/phaethon-welcome-app"
