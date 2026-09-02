@@ -145,6 +145,7 @@ ark
 kcalc
 systemsettings
 flatpak
+discover
 xdg-desktop-portal-kde
 xdg-user-dirs
 xdg-utils
@@ -166,6 +167,16 @@ wireplumber
 # AUR helpers (available from CachyOS repos)
 yay
 paru
+
+# ------------------------------------------------------------------------------
+# PERFORMANCE DAEMONS
+# ------------------------------------------------------------------------------
+# Both of these were already being *enabled* -- airootfs ships a
+# multi-user.target.wants symlink for ananicy-cpp.service -- but neither package
+# was ever in this manifest, so the symlink dangled and the service could never
+# start. The welcome dashboard advertised both as active.
+ananicy-cpp
+zram-generator
 
 # Electron (needed by welcome app)
 electron

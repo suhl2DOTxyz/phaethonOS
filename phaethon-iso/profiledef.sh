@@ -43,6 +43,11 @@ file_permissions=(
     ["/usr/local/bin/phaethon-install-calamares-config"]="0:0:755"
     ["/etc/polkit-1/rules.d/10-calamares-nopasswd.rules"]="0:0:644"
     ["/etc/sudoers.d/g_wheel"]="0:0:440"
+    # Plasma refuses to run a desktop entry that is not executable and
+    # stamps a warning badge on its icon, which is what the launchers on
+    # the live desktop were showing.
+    ["/etc/skel/Desktop/calamares.desktop"]="0:0:755"
+    ["/etc/skel/Desktop/phaethon-welcome.desktop"]="0:0:755"
     ["/usr/local/bin/phaethon-fix-libs.sh"]="0:0:755"
 )
 

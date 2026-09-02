@@ -17,8 +17,13 @@
     --error-color: #FF4444;
     --gold-color: #D4AF37;
     
-    --font-display: 'Barlow Condensed', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    /* Local stacks only. The dashboard is the first thing a user sees after
+       install, frequently before they have joined a network, so it must not
+       depend on a webfont CDN. Inter ships in packages.x86_64; the condensed
+       faces degrade through DejaVu, which ships too. */
+    --font-display: 'Barlow Condensed', 'Archivo Narrow', 'Liberation Sans Narrow',
+                    'DejaVu Sans Condensed', 'Inter', system-ui, sans-serif;
+    --font-body: 'Inter', 'Noto Sans', 'DejaVu Sans', system-ui, sans-serif;
     
     --border-width: 3px;
     --transition-snappy: 0.1s ease-in-out;
@@ -403,6 +408,25 @@ body {
     background-color: var(--accent-color);
     color: var(--text-on-light);
     border: 2px solid var(--accent-color);
+}
+
+/* A probed badge that came back negative. .badge on its own has no border, so
+   without this an "inactive" state would render as floating unstyled text. */
+.badge:not(.active-badge) {
+    background-color: transparent;
+    border: 2px solid #888888;
+    color: #888888;
+}
+
+/* Small live package/service state line under an action. */
+.pkg-state {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #888888;
 }
 
 /* --- 6. CHECKBOX CARDS FOR SYSTEM DEPLOY --- */

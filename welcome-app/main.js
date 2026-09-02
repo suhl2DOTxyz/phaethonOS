@@ -10,9 +10,11 @@ function createWindow() {
     title: "PHAETHON OS // WELCOME DASHBOARD",
     icon: path.join(__dirname, 'phaethon-logo.png'),
     webPreferences: {
+      // The renderer shells out to pacman/systemctl, so it needs Node. That is
+      // only safe because every asset it loads is local -- see the CSP in
+      // index.html. Do not reintroduce remote content here.
       nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true
+      contextIsolation: false
     }
   });
 

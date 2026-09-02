@@ -107,6 +107,39 @@ if ! $HAS_DISPLAY; then
     die "No display server available"
 fi
 
+# --- Refuse to launch into a dynamic-linker error ---
+# Re-check after the repair attempts above. Launching anyway just dumps
+# "error while loading shared libraries: ... cannot open shared object file"
+# on the user with no indication of what to do about it.
+STILL_MISSING=$(ldd "$CALAMARES_BIN" 2>/dev/null | grep "not found" | awk '{print $1}')
+if [ -n "$STILL_MISSING" ]; then
+    warn "Calamares still has unresolved libraries after repair:"
+    for lib in $STILL_MISSING; do
+        warn "  missing: $lib"
+        # A boost-python soname encodes BOTH the Python ABI and the boost
+        # release (libboost_python314.so.1.91.0 = Python 3.14, boost 1.91.0), so
+        # a mismatch here means cachyos-calamares was built against a different
+        # boost/python pair than the one the repos are currently shipping. That
+        # cannot be repaired with a symlink: a boost-python built for another
+        # Python links a libpython this system does not have.
+        case "$lib" in
+            libboost_python*)
+                warn "  -> this is a boost/python version mismatch, not a broken install."
+                warn "     present on this system:"
+                found=$(find /usr/lib -maxdepth 1 -name 'libboost_python*' 2>/dev/null)
+                if [ -n "$found" ]; then
+                    echo "$found" | while read -r f; do warn "       $(basename "$f")"; done
+                else
+                    warn "       (none -- the boost-libs package provides no python component)"
+                fi
+                warn "     installed: $(pacman -Q boost-libs python 2>/dev/null | tr '\n' ' ')"
+                warn "     cachyos-calamares needs the boost-libs build matching $lib."
+                ;;
+        esac
+    done
+    die "Calamares cannot start: $(echo "$STILL_MISSING" | tr '\n' ' ')"
+fi
+
 # --- Preserve and launch ---
 if [ -n "$SUDO_USER" ]; then
     log "Elevating via sudo for user: $SUDO_USER"
