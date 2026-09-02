@@ -1,0 +1,14 @@
+[Unit]
+Description=Phaethon OS - Install Calamares module configuration
+Documentation=file:///usr/local/bin/phaethon-install-calamares-config
+# Must be in place before anyone can reach a desktop and launch the installer.
+Before=display-manager.service
+ConditionPathIsDirectory=/usr/share/phaethon/calamares/modules
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/phaethon-install-calamares-config
+
+[Install]
+WantedBy=multi-user.target

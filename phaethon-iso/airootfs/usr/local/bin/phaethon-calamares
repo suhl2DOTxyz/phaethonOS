@@ -29,6 +29,20 @@ if [ ! -x "$CALAMARES_BIN" ]; then
 fi
 log "Using Calamares: $CALAMARES_BIN"
 
+# --- Install the PhaethonOS Calamares module configuration ---
+# phaethon-calamares-config.service already does this at boot; repeating it here
+# is cheap, idempotent, and means the installer still gets PhaethonOS's configs
+# rather than the CachyOS defaults if that unit never ran. See
+# /usr/local/bin/phaethon-install-calamares-config for why these cannot simply
+# ship at /etc/calamares/modules/ in the ISO overlay.
+if [ -d /usr/share/phaethon/calamares/modules ]; then
+    if [ "$(id -u)" -eq 0 ]; then
+        /usr/local/bin/phaethon-install-calamares-config || warn "Could not install module configs"
+    else
+        sudo -n /usr/local/bin/phaethon-install-calamares-config || warn "Could not install module configs"
+    fi
+fi
+
 # --- Fix library mismatches ---
 # The cachyos-calamares netinstall module links against libyaml-cpp.so.0.8
 # but the distro ships libyaml-cpp.so.0.9 (ABI compatible).

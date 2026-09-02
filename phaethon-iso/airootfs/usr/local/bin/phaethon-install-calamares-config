@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# PHAETHON OS - INSTALL CALAMARES MODULE CONFIGURATION
+# ==============================================================================
+# Copies the PhaethonOS Calamares module configs into /etc/calamares/modules/,
+# where Calamares looks for them.
+#
+# WHY THIS IS NOT JUST AN OVERLAY FILE: the `cachyos-calamares` package owns
+# /etc/calamares/modules/*.conf. archiso applies the airootfs overlay BEFORE
+# pacstrap (_make_custom_airootfs runs ahead of _make_packages), so shipping our
+# configs at that path makes pacman refuse to install cachyos-calamares at all:
+#
+#   error: failed to commit transaction (conflicting files)
+#   cachyos-calamares: /etc/calamares/modules/bootloader.conf exists in filesystem
+#
+# `NoExtract` does not help -- pacman's file-conflict check runs before
+# extraction and does not consult it. So the configs ride along in the overlay
+# at /usr/share/phaethon/calamares/modules/ and get put in place at runtime,
+# deliberately overwriting the CachyOS defaults the package ships: those are
+# configured for CachyOS's desktops, package sets and branding, not ours.
+#
+# Idempotent. Run at boot by phaethon-calamares-config.service, and again by the
+# phaethon-calamares wrapper just before the installer launches.
+#
+set -o pipefail
+
+SRC="/usr/share/phaethon/calamares/modules"
+DST="/etc/calamares/modules"
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "[phaethon-calamares-config] must run as root" >&2
+    exit 1
+fi
+
+if [ ! -d "$SRC" ]; then
+    echo "[phaethon-calamares-config] no configs at $SRC, nothing to do" >&2
+    exit 0
+fi
+
+install -d -m 0755 "$DST"
+install -m 0644 "$SRC"/*.conf "$DST"/ || {
+    echo "[phaethon-calamares-config] FAILED to install configs into $DST" >&2
+    exit 1
+}
+
+echo "[phaethon-calamares-config] installed $(ls -1 "$SRC"/*.conf | wc -l) module configs into $DST"

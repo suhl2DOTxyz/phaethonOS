@@ -19,6 +19,12 @@ CheckSpace
 VerbosePkgLists
 ParallelDownloads = 8
 
+# Deliberately stricter than the live ISO, which uses `SigLevel = Optional
+# TrustAll` for [cachyos]. That is a reasonable build-time convenience on a
+# throwaway live session, but on somebody's actual machine it would disable
+# signature verification for every CachyOS package forever. This relies on the
+# keyring that shellprocess@initialize_pacman populates and
+# shellprocess@before-online copies into the target.
 SigLevel    = Required DatabaseOptional
 LocalFileSigLevel = Optional
 
@@ -28,13 +34,12 @@ LocalFileSigLevel = Optional
 # Provides linux-cachyos and the CachyOS-built userland this system runs on.
 # Must stay ahead of [core]/[extra] so its optimised builds win.
 #
-# An explicit Server rather than `Include = /etc/pacman.d/cachyos-mirrorlist`:
-# this file is installed into the target *before* pacstrap, so no package has
-# provided a cachyos-mirrorlist yet and an Include of a missing file aborts
-# pacman outright. Switch to the mirrorlist after install if you want mirror
-# ranking; cachyos-mirrorlist is in the package manifest.
+# This Include has to resolve before pacstrap has installed anything, so
+# shellprocess@before-online copies the live ISO's cachyos-mirrorlist into the
+# target first -- an Include of a missing file aborts pacman outright. The
+# cachyos-mirrorlist package later lands on top of that copy.
 [cachyos]
-Server = https://mirror.cachyos.org/repo/$arch/$repo
+Include = /etc/pacman.d/cachyos-mirrorlist
 
 # ==============================================================================
 # STANDARD ARCH REPOSITORIES
