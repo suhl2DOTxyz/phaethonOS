@@ -39,6 +39,7 @@ file_permissions=(
     ["/usr/local/bin/phaethon-init.sh"]="0:0:755"
     ["/usr/local/bin/phaethon-calamares"]="0:0:755"
     ["/usr/local/bin/phaethon-welcome"]="0:0:755"
+    ["/usr/local/bin/phaethon-welcome-firstrun"]="0:0:755"
     ["/etc/polkit-1/rules.d/10-calamares-nopasswd.rules"]="0:0:644"
     ["/etc/sudoers.d/g_wheel"]="0:0:440"
     ["/usr/local/bin/phaethon-fix-libs.sh"]="0:0:755"

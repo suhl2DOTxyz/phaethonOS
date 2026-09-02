@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# PHAETHON OS - WELCOME DASHBOARD, FIRST-RUN WRAPPER
+# ==============================================================================
+# One-shot wrapper used only by the INSTALLED system's autostart entry.
+#
+# The live ISO opens the welcome dashboard on every login, which is right for a
+# live session -- every boot there is somebody's first. On an installed system
+# that would mean the dashboard reopening forever, so this wrapper deletes its
+# own autostart entry from the user's home before handing off to the real
+# launcher: it runs once, on the first login after installation, and never
+# again.
+#
+# The Desktop launcher and the application menu entry are untouched, so the
+# dashboard can still be opened deliberately at any time.
+#
+
+rm -f "${HOME}/.config/autostart/phaethon-welcome.desktop"
+
+exec /usr/local/bin/phaethon-welcome "$@"
