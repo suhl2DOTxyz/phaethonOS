@@ -44,67 +44,21 @@ if [ -d /usr/share/phaethon/calamares/modules ]; then
 fi
 
 # --- Fix library mismatches ---
-# The cachyos-calamares netinstall module links against libyaml-cpp.so.0.8
-# but the distro ships libyaml-cpp.so.0.9 (ABI compatible).
-if [ -f /usr/lib/libyaml-cpp.so.0.9 ] && [ ! -f /usr/lib/libyaml-cpp.so.0.8 ]; then
-    log "Linking libyaml-cpp.so.0.9 -> libyaml-cpp.so.0.8"
-    ln -sf libyaml-cpp.so.0.9 /usr/lib/libyaml-cpp.so.0.8 2>/dev/null || warn "Could not create yaml-cpp symlink"
-fi
-
-# Check for any other missing libraries and try to resolve them
-MISSING=$(ldd "$CALAMARES_BIN" 2>/dev/null | grep "not found" | awk '{print $1}')
-if [ -n "$MISSING" ]; then
-    log "Missing libraries: $MISSING"
-    for lib in $MISSING; do
-        base="${lib%.so*}"
-        found=$(find /usr/lib /usr/lib64 -maxdepth 2 -name "${base}.so.*" 2>/dev/null | sort -V | tail -1)
-        if [ -n "$found" ]; then
-            ln -sf "$found" "/usr/lib/$lib" 2>/dev/null && log "Fixed: $lib -> $found"
-        fi
-    done
-    ldconfig 2>/dev/null || true
-fi
-
-# --- Check for missing module libraries ---
-MOD_MISSING=$(for mod in /usr/lib/calamares/modules/*/libcalamares*.so; do
-    ldd "$mod" 2>/dev/null | grep "not found" | awk '{print $1}'
-done | sort -u)
-if [ -n "$MOD_MISSING" ]; then
-    log "Module missing libraries: $MOD_MISSING"
-    for lib in $MOD_MISSING; do
-        base="${lib%.so*}"
-        found=$(find /usr/lib /usr/lib64 -maxdepth 2 -name "${base}.so.*" 2>/dev/null | sort -V | tail -1)
-        if [ -n "$found" ]; then
-            ln -sf "$found" "/usr/lib/$lib" 2>/dev/null && log "Fixed module lib: $lib -> $found"
-        fi
-    done
-    ldconfig 2>/dev/null || true
-fi
-
-# --- Detect display server ---
-HAS_DISPLAY=false
-if [ -n "$WAYLAND_DISPLAY" ] && [ -S "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" ]; then
-    log "Wayland display detected: $WAYLAND_DISPLAY"
-    export QT_QPA_PLATFORM=wayland
-    export WAYLAND_DISPLAY="$WAYLAND_DISPLAY"
-    export XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR"
-    # Make Wayland socket accessible for root
-    chmod 777 "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}" 2>/dev/null || true
-    HAS_DISPLAY=true
-elif [ -n "$DISPLAY" ]; then
-    log "X11 display detected: $DISPLAY"
-    export QT_QPA_PLATFORM=xcb
-    export DISPLAY="$DISPLAY"
-    if command -v xhost &>/dev/null; then
-        xhost +SI:localuser:root 2>/dev/null || warn "xhost failed"
+# Delegated to phaethon-fix-libs.sh, which must run as root. This used to be an
+# inline loop right here -- but everything above the sudo exec at the bottom of
+# this script runs as the unprivileged live user, so its `ln -sf` into /usr/lib
+# got EACCES, `2>/dev/null` swallowed the error and `&&` skipped the success
+# log. The repair silently did nothing on every launch; the only visible symptom
+# was Calamares still dying on a missing library.
+#
+# phaethon-fix-libs.service already runs this at boot. Repeating it here is
+# idempotent and covers a session where that unit did not run.
+if [ -x /usr/local/bin/phaethon-fix-libs.sh ]; then
+    if [ "$(id -u)" -eq 0 ]; then
+        /usr/local/bin/phaethon-fix-libs.sh || warn "library repair reported unresolved libraries"
+    else
+        sudo -n /usr/local/bin/phaethon-fix-libs.sh || warn "library repair reported unresolved libraries"
     fi
-    HAS_DISPLAY=true
-fi
-
-if ! $HAS_DISPLAY; then
-    warn "No display server detected (no WAYLAND_DISPLAY or DISPLAY). Calamares needs a graphical session."
-    warn "Please launch from the desktop environment, not from a TTY."
-    die "No display server available"
 fi
 
 # --- Refuse to launch into a dynamic-linker error ---
