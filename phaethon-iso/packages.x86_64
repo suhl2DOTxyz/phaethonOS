@@ -171,8 +171,13 @@ paru
 electron
 
 # Fonts
+# inter-font is required, not cosmetic: /etc/skel/.config/kdeglobals sets
+# the Plasma UI font to Inter, and without it Plasma silently falls back.
+inter-font
 cantarell-fonts
 ttf-dejavu
+noto-fonts
+noto-fonts-emoji
 
 # ------------------------------------------------------------------------------
 # 4. PRODUCTIVITY & END-USER ESSENTIALS
