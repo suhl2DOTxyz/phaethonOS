@@ -11,11 +11,11 @@ strings:
     versionedName:       PhaethonOS 1.0.0 Belle
     shortVersionedName:  PhaethonOS 1.0.0
     bootloaderEntryName: PhaethonOS
-    productUrl:          https://suhl2.xyz/phaethonOS
-    supportUrl:          https://suhl2.xyz/phaethonOS
-    knownIssuesUrl:      https://suhl2.xyz/phaethonOS
-    releaseNotesUrl:     https://suhl2.xyz/phaethonOS
-    donateUrl:           https://suhl2.xyz/phaethonOS
+    productUrl:          https://phaethon.suhl2.xyz
+    supportUrl:          https://phaethon.suhl2.xyz/support
+    knownIssuesUrl:      https://phaethon.suhl2.xyz/issues
+    releaseNotesUrl:     https://phaethon.suhl2.xyz/release-notes
+    donateUrl:           https://phaethon.suhl2.xyz
 
 images:
     productLogo:         "phaethon-logo.png"

@@ -99,15 +99,31 @@ if [ -n "$STILL_MISSING" ]; then
 fi
 
 # --- Preserve and launch ---
-if [ -n "$SUDO_USER" ]; then
-    log "Elevating via sudo for user: $SUDO_USER"
-    exec sudo -E env \
-        DISPLAY="$DISPLAY" \
-        WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
-        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-        QT_QPA_PLATFORM="$QT_QPA_PLATFORM" \
-        "$CALAMARES_BIN" "$@"
-else
-    log "Launching Calamares directly"
+# Calamares partitions disks and pacstraps a system; it must be root, and it
+# refuses to proceed otherwise ("The installer is not running with
+# administrator rights").
+#
+# This condition used to be `if [ -n "$SUDO_USER" ]`, which is exactly
+# backwards. SUDO_USER is set only when this script was ALREADY invoked through
+# sudo -- so launching from the desktop icon or a plain shell left it unset, took
+# the else branch, and started Calamares as the unprivileged live user. It
+# elevated only in the one case where it was already elevated.
+#
+# The right question is simply "am I root".
+if [ "$(id -u)" -eq 0 ]; then
+    log "Already running as root"
     exec "$CALAMARES_BIN" "$@"
 fi
+
+log "Elevating via sudo (current user: $(id -un))"
+# -E alone is not enough: sudoers resets the environment, so the display
+# variables Calamares needs are passed explicitly. XAUTHORITY matters on X11 --
+# without it a root Qt process cannot open the user's display.
+exec sudo -E env \
+    DISPLAY="${DISPLAY}" \
+    XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}" \
+    WAYLAND_DISPLAY="${WAYLAND_DISPLAY}" \
+    XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" \
+    XDG_SESSION_TYPE="${XDG_SESSION_TYPE}" \
+    QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
+    "$CALAMARES_BIN" "$@"
