@@ -143,6 +143,7 @@ else
         if curl -fsSL "${ARCHIVE}/${PKG}" -o "${BOOST_TMP}/pkg.tar.zst" &&
            bsdtar -xf "${BOOST_TMP}/pkg.tar.zst" -C "${BOOST_TMP}" "usr/lib/${BOOST_SO}" 2>/dev/null; then
             cp "${BOOST_TMP}/usr/lib/${BOOST_SO}" "${BOOST_DEST}"
+            echo "${PKG}" > "${PROFILE_DIR}/airootfs/usr/lib/.${BOOST_SO}.source"
             break
         fi
     done
@@ -186,6 +187,12 @@ echo -e "${COLOR_WHITE}[✔] Welcome App source synchronized.${COLOR_RESET}"
 echo -e "${COLOR_ACCENT}[+] Step 3: Compiling bootable squashfs image with archiso...${COLOR_RESET}"
 echo -e "${COLOR_MUTED}This process may take some time depending on your system and network throughput...${COLOR_RESET}"
 
+# The vendoring marker is bookkeeping for this script, not ISO content --
+# archiso copies the overlay verbatim, so remove it before the image is built.
+BOOST_MARKER="${PROFILE_DIR}/airootfs/usr/lib/.${BOOST_SO}.source"
+BOOST_PKG_USED="$( [ -f "${BOOST_MARKER}" ] && cat "${BOOST_MARKER}" || echo unknown )"
+rm -f "${BOOST_MARKER}"
+
 # Execute archiso build
 # -w work dir, -o output dir, -v verbose
 mkarchiso -v -w "${WORK_DIR}" -o "${OUT_DIR}" "${PROFILE_DIR}"
@@ -197,6 +204,9 @@ if [ ${BUILD_STATUS} -eq 0 ]; then
     echo "  P H A E T H O N   O S   C O M P I L A T I O N   C O M P L E T E D !"
     echo "=========================================================================="
     echo -e "Bootable ISO compiled successfully! File is saved at:"
+    if [ "${BOOST_PKG_USED:-unknown}" != unknown ]; then
+        echo -e "${COLOR_MUTED}Vendored boost: ${BOOST_PKG_USED} -> ${BOOST_SO}${COLOR_RESET}"
+    fi
     echo -e "${COLOR_ACCENT}${OUT_DIR}/phaethon-os-v1.0.0-Belle-x86_64.iso${COLOR_RESET}"
 else
     echo -e "${COLOR_ERROR}[ERROR] Compilation failed during mkarchiso execution (Exit Code: ${BUILD_STATUS}).${COLOR_RESET}"
