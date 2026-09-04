@@ -1,3 +1,6 @@
 build_work/
 *.iso
 *.img
+
+# Fetched at build time by build-iso.sh, not source
+phaethon-iso/airootfs/usr/lib/libboost_python*

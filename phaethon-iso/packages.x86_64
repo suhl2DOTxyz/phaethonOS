@@ -177,6 +177,10 @@ paru
 # start. The welcome dashboard advertised both as active.
 ananicy-cpp
 zram-generator
+# Same story: a multi-user.target.wants symlink for irqbalance.service already
+# ships in airootfs, and services-systemd.conf enables it on the installed
+# system, but nothing ever provided the unit.
+irqbalance
 
 # Electron (needed by welcome app)
 electron
@@ -243,6 +247,5 @@ make
 patch
 pkgconf
 sed
-sudo
 texinfo
 which
