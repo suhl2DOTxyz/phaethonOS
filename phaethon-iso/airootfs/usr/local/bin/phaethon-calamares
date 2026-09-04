@@ -65,11 +65,15 @@ fi
 # Re-check after the repair attempts above. Launching anyway just dumps
 # "error while loading shared libraries: ... cannot open shared object file"
 # on the user with no indication of what to do about it.
-STILL_MISSING=$(ldd "$CALAMARES_BIN" 2>/dev/null | grep "not found" | awk '{print $1}')
+# `ldd -r`, not plain `ldd`. Plain ldd only proves each soname resolves to a
+# file, which a same-name-different-ABI symlink satisfies -- and Calamares
+# then dies with "symbol lookup error" after this script has already said it
+# was fine. -r binds the symbols too, which is the check that matters.
+STILL_MISSING=$(ldd -r "$CALAMARES_BIN" 2>&1 | grep -E "not found|undefined symbol")
 if [ -n "$STILL_MISSING" ]; then
     warn "Calamares still has unresolved libraries after repair:"
-    for lib in $STILL_MISSING; do
-        warn "  missing: $lib"
+    printf '%s\n' "$STILL_MISSING" | while read -r lib; do
+        warn "  $lib"
         # A boost-python soname encodes BOTH the Python ABI and the boost
         # release (libboost_python314.so.1.91.0 = Python 3.14, boost 1.91.0), so
         # a mismatch here means cachyos-calamares was built against a different
@@ -91,7 +95,7 @@ if [ -n "$STILL_MISSING" ]; then
                 ;;
         esac
     done
-    die "Calamares cannot start: $(echo "$STILL_MISSING" | tr '\n' ' ')"
+    die "Calamares cannot start -- see the diagnosis above."
 fi
 
 # --- Preserve and launch ---
