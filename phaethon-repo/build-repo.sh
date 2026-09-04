@@ -15,7 +15,14 @@ export COLOR_RESET="\e[0m"
 echo -e "${COLOR_GOLD}         P H A E T H O N   O S   -   R E P O   M A N A G E R${COLOR_RESET}"
 echo "=========================================================================="
 
-REPO_DIR="/home/suhl2/Documents/PhaethonOS/phaethon-repo/x86_64"
+# Resolve paths relative to the script's location, the same way build-iso.sh
+# does. a59452c made build-iso.sh and clean.sh host-agnostic but missed this
+# file, which kept an absolute path into the original author's home directory
+# and therefore only ever worked on one machine.
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+REPO_DIR="${SCRIPT_DIR}/x86_64"
+
+mkdir -p "${REPO_DIR}"
 cd "${REPO_DIR}" || { echo -e "${COLOR_ERROR}[ERROR] Failed to access repository path: ${REPO_DIR}${COLOR_RESET}"; exit 1; }
 
 echo -e "${COLOR_ACCENT}[+] Step 1: Scanning for compiled distribution packages...${COLOR_RESET}"
