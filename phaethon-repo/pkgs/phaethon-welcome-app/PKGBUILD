@@ -1,4 +1,21 @@
 # Maintainer: Phaethon OS Project Developers <dev@phaethonos.org>
+#
+# NOT CURRENTLY BUILT OR SHIPPED. build-iso.sh syncs welcome-app/ straight into
+# the airootfs overlay instead, and the [phaethon] repo is commented out in
+# phaethon-iso/pacman.conf.
+#
+# BEFORE ENABLING THIS, READ: this package installs
+# /usr/share/phaethon-welcome-app, which the overlay ALSO ships. archiso applies
+# the overlay before pacstrap, so pacman would abort the whole transaction:
+#
+#   error: failed to commit transaction (conflicting files)
+#   phaethon-welcome-app: /usr/share/phaethon-welcome-app/... exists in filesystem
+#
+# That is exactly the failure that killed CI run #4 with cachyos-calamares over
+# /etc/calamares/modules. Enabling this package means removing the overlay sync
+# from build-iso.sh and dropping welcome-app from the airootfs -- pick one
+# delivery mechanism, not both.
+#
 pkgname=phaethon-welcome-app
 pkgver=1.0.0
 pkgrel=1
@@ -8,24 +25,42 @@ url="https://phaethonos.org"
 license=('GPL3')
 depends=('electron')
 makedepends=()
-source=('welcome-app/') # Pulls source files from local welcome-app folder
-sha256sums=('SKIP')     # Local builds bypass checksum validation
+
+# No source array. It previously read source=('welcome-app/'), which makepkg
+# resolves relative to THIS directory -- so it looked for
+# phaethon-repo/pkgs/phaethon-welcome-app/welcome-app/ and failed with
+# "could not find source file". The real tree is at the repository root, three
+# levels up, which a source entry cannot reach.
+source=()
+sha256sums=()
+
+_appsrc() { printf '%s' "$(cd "${startdir}/../../.." && pwd)/welcome-app"; }
 
 package() {
-    # Establish targets
-    mkdir -p "${pkgdir}/usr/share/phaethon-welcome-app"
-    mkdir -p "${pkgdir}/usr/bin"
-    
-    # Copy code assets
-    cp -r "${srcdir}/welcome-app/"* "${pkgdir}/usr/share/phaethon-welcome-app/"
-    
-    # Write wrapper runner binary launcher
-    cat <<EOF > "${pkgdir}/usr/bin/phaethon-welcome"
+    local src
+    src="$(_appsrc)"
+
+    if [ ! -f "${src}/package.json" ]; then
+        echo "ERROR: welcome-app sources not found at ${src}" >&2
+        return 1
+    fi
+
+    install -d "${pkgdir}/usr/share/phaethon-welcome-app"
+    cp -r "${src}/." "${pkgdir}/usr/share/phaethon-welcome-app/"
+
+    # Electron is handed the application DIRECTORY, not index.html. This used to
+    # run `electron .../index.html`, which is wrong: index.html is loaded by
+    # main.js through loadFile(), it is not the entry point. package.json's
+    # "main" is main.js, and pointing Electron at the directory is what makes it
+    # read that.
+    #
+    # --no-sandbox matches the overlay launcher: the Chromium sandbox cannot
+    # initialise in the live session's root context.
+    install -d "${pkgdir}/usr/bin"
+    cat > "${pkgdir}/usr/bin/phaethon-welcome" <<'EOF'
 #!/usr/bin/env bash
-# Wrapper execution hook to launch Welcome app within system-installed Electron wrapper
-electron /usr/share/phaethon-welcome-app/index.html "\$@"
+# Launch the Phaethon OS welcome dashboard under the system Electron runtime.
+exec electron --no-sandbox /usr/share/phaethon-welcome-app "$@"
 EOF
-    
-    # Grant execute privileges
-    chmod +x "${pkgdir}/usr/bin/phaethon-welcome"
+    chmod 755 "${pkgdir}/usr/bin/phaethon-welcome"
 }

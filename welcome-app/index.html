@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHAETHON OS // FIRST LAUNCH WIZARD</title>
     <meta name="description" content="Welcome launcher and performance optimization wizard for Phaethon OS - the ultimate high-performance Linux distribution.">
-    <!-- Google Fonts Integration -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fonts are resolved locally from the packages the ISO ships (see
+         styles.css). Nothing here may load from the network: this window opens
+         on first boot, often before the user has connected to anything, and the
+         renderer has Node integration enabled -- remote content in that context
+         is a code-execution surface, not just a slow font. -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -105,23 +108,30 @@
                 <h2 class="section-title">GAMING ENVIRONMENT COMPOSER //</h2>
                 <p class="section-subtitle">Select the high-performance gaming components you wish to deploy. Tap the toggles and execute.</p>
                 
+                <!-- data-pkg drives both the live "already installed" check and the
+                     package list handed to pacman. Every name here must exist in a
+                     configured repo: heroic-games-launcher-bin used to sit in this
+                     list and is AUR-only, so deploying it could only ever fail. -->
                 <div class="grid-layout three-col">
-                    <div class="card check-card" id="game-steam">
+                    <div class="card check-card" id="game-steam" data-pkg="steam">
                         <div class="checkbox-indicator checked"></div>
                         <h4>STEAM</h4>
                         <p>Native client pre-configured with Proton compatibility layers.</p>
-                    </div>
-                    
-                    <div class="card check-card" id="game-heroic">
-                        <div class="checkbox-indicator checked"></div>
-                        <h4>HEROIC LAUNCHER</h4>
-                        <p>Play Epic Games, GOG, and Amazon Prime Games natively.</p>
+                        <span class="pkg-state" data-state>CHECKING...</span>
                     </div>
 
-                    <div class="card check-card" id="game-bottles">
+                    <div class="card check-card" id="game-lutris" data-pkg="lutris">
+                        <div class="checkbox-indicator checked"></div>
+                        <h4>LUTRIS</h4>
+                        <p>Manage Epic, GOG and standalone Windows games through Wine runners.</p>
+                        <span class="pkg-state" data-state>CHECKING...</span>
+                    </div>
+
+                    <div class="card check-card" id="game-bottles" data-pkg="bottles">
                         <div class="checkbox-indicator checked"></div>
                         <h4>BOTTLES</h4>
                         <p>Run Windows applications and executables in sandboxed environments.</p>
+                        <span class="pkg-state" data-state>CHECKING...</span>
                     </div>
                 </div>
 
@@ -140,12 +150,14 @@
                         <h3>DOCKER VIRTUALIZATION ENGINE</h3>
                         <p>Includes Docker daemon and docker-compose orchestration tool. Runs automatically in background.</p>
                         <button class="pill-btn action-btn" id="btn-enable-docker">ENABLE / DOCKER</button>
+                        <span class="pkg-state" id="state-docker">CHECKING...</span>
                     </section>
 
                     <section class="card panel-card">
                         <h3>VISUAL STUDIO CODE IDE</h3>
                         <p>Deploy the high-performance, extension-capable programming environment. Standard VS Code bin package.</p>
-                        <button class="pill-btn action-btn" id="btn-install-vscode">INSTALL / VS CODE</button>
+                        <button class="pill-btn action-btn" id="btn-install-vscode" data-pkg="code">INSTALL / VS CODE</button>
+                        <span class="pkg-state" id="state-vscode">CHECKING...</span>
                     </section>
                 </div>
             </article>
@@ -155,29 +167,34 @@
                 <h2 class="section-title">PERFORMANCE & SECURITY TWEAKS //</h2>
                 <p class="section-subtitle">Configure advanced low-level kernel parameters and network defenses instantly.</p>
                 
+                <!-- These badges are probed at runtime, never hardcoded. They used to
+                     read "ENABLED" unconditionally, which meant the dashboard
+                     confidently reported ZRAM and Ananicy as active on an ISO that
+                     shipped neither. A dashboard that lies is worse than no
+                     dashboard. -->
                 <div class="tweaks-list">
-                    <div class="tweak-item">
+                    <div class="tweak-item" data-unit="systemd-zram-setup@zram0.service">
                         <div class="tweak-desc">
                             <h4>ZRAM SYSTEM COMPRESSION (50% RAM)</h4>
                             <p>Enables ultra-fast compressed RAM swap paging, decreasing latency on compiles and gaming loads.</p>
                         </div>
-                        <span class="badge active-badge">ENABLED</span>
+                        <span class="badge" data-state>PROBING...</span>
                     </div>
 
-                    <div class="tweak-item">
+                    <div class="tweak-item" data-unit="ananicy-cpp.service">
                         <div class="tweak-desc">
-                            <h4>ANANICY PROCESS PRIORITY DEMON</h4>
+                            <h4>ANANICY PROCESS PRIORITY DAEMON</h4>
                             <p>Actively schedules frame-critical game tasks with higher nice values to prevent micro-stuttering.</p>
                         </div>
-                        <span class="badge active-badge">ENABLED</span>
+                        <span class="badge" data-state>PROBING...</span>
                     </div>
 
-                    <div class="tweak-item">
+                    <div class="tweak-item" data-unit="firewalld.service">
                         <div class="tweak-desc">
                             <h4>FIREWALLD NETWORK SHIELD</h4>
                             <p>Deploys robust ingress filters to block unauthorized socket probes on public networks.</p>
                         </div>
-                        <span class="badge active-badge">ENABLED</span>
+                        <span class="badge" data-state>PROBING...</span>
                     </div>
                 </div>
             </article>

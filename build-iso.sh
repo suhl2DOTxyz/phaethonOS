@@ -98,6 +98,85 @@ rm -rf "${PROFILE_DIR}/airootfs/usr/share/grub/themes/phaethon"
 cp -aT "${PROFILE_DIR}/grub/themes/phaethon" "${PROFILE_DIR}/airootfs/usr/share/grub/themes/phaethon"
 echo -e "${COLOR_WHITE}[✔] GRUB theme synchronized.${COLOR_RESET}"
 
+# ==============================================================================
+# VENDOR THE BOOST RELEASE cachyos-calamares WAS BUILT AGAINST
+# ==============================================================================
+# cachyos-calamares 3.4.2-4 links libboost_python314.so.1.91.0. Arch has since
+# moved to boost 1.92, and CachyOS has not rebuilt the package, so the installer
+# dies at startup:
+#
+#   /usr/bin/calamares: symbol lookup error: /usr/lib/libcalamares.so.3.4:
+#   undefined symbol: boost::python::detail::init_module(PyModuleDef&, void(*)())
+#
+# Symlinking 1.91 -> 1.92 does not work: boost 1.92 dropped that overload.
+# The sonames differ, so instead we ship the 1.91 runtime library alongside
+# 1.92. Nothing is downgraded and no other package is affected -- only
+# Calamares looks for the 1.91 soname.
+#
+# Remove this block once cachyos-calamares is rebuilt against current boost.
+BOOST_SO="libboost_python${PY_ABI:-314}.so.1.91.0"
+BOOST_DEST="${PROFILE_DIR}/airootfs/usr/lib/${BOOST_SO}"
+ARCHIVE="https://archive.archlinux.org/packages/b/boost-libs"
+
+if [ -f "${BOOST_DEST}" ]; then
+    echo -e "${COLOR_WHITE}[✔] Vendored ${BOOST_SO} already present.${COLOR_RESET}"
+else
+    echo -e "${COLOR_MUTED}[i] Fetching ${BOOST_SO} from the Arch archive...${COLOR_RESET}"
+    mkdir -p "${PROFILE_DIR}/airootfs/usr/lib"
+    BOOST_TMP="$(mktemp -d)"
+
+    # Several pkgrels of 1.91.0 exist and only the later ones were rebuilt
+    # against Python 3.14. Walk them newest-first and keep the first package
+    # that actually contains the soname we need.
+    PKG_LIST="$(curl -fsSL "${ARCHIVE}/" 2>/dev/null |
+                grep -oE 'boost-libs-1\.91\.0-[0-9]+-x86_64\.pkg\.tar\.zst' |
+                sort -Vu | tac)"
+
+    if [ -z "${PKG_LIST}" ]; then
+        echo -e "${COLOR_ERROR}[ERROR] Could not reach ${ARCHIVE}/ to fetch boost 1.91.${COLOR_RESET}"
+        echo    "        Calamares will not start without ${BOOST_SO}."
+        rm -rf "${BOOST_TMP}"; exit 1
+    fi
+
+    for PKG in ${PKG_LIST}; do
+        echo -e "${COLOR_MUTED}    trying ${PKG}${COLOR_RESET}"
+        if curl -fsSL "${ARCHIVE}/${PKG}" -o "${BOOST_TMP}/pkg.tar.zst" &&
+           bsdtar -xf "${BOOST_TMP}/pkg.tar.zst" -C "${BOOST_TMP}" "usr/lib/${BOOST_SO}" 2>/dev/null; then
+            cp "${BOOST_TMP}/usr/lib/${BOOST_SO}" "${BOOST_DEST}"
+            echo "${PKG}" > "${PROFILE_DIR}/airootfs/usr/lib/.${BOOST_SO}.source"
+            break
+        fi
+    done
+
+    rm -rf "${BOOST_TMP}"
+
+    if [ ! -f "${BOOST_DEST}" ]; then
+        echo -e "${COLOR_ERROR}[ERROR] No boost-libs 1.91.0 package contained ${BOOST_SO}.${COLOR_RESET}"
+        echo    "        The Python ABI suffix is probably wrong; check what"
+        echo    "        cachyos-calamares actually links with:"
+        echo    "          ldd /usr/bin/calamares | grep boost_python"
+        exit 1
+    fi
+
+    # Fail here rather than in the VM: the whole point of this file is one
+    # symbol, so prove it is exported before shipping an ISO around it.
+    # nm is preferred (it distinguishes defined from referenced symbols) but
+    # binutils is not guaranteed in a bare build container, so fall back to
+    # grepping .dynstr, where the mangled name appears literally.
+    if command -v nm >/dev/null 2>&1; then
+        BOOST_HAS_SYM=$(nm -D --defined-only "${BOOST_DEST}" 2>/dev/null |
+                        grep -c '_ZN5boost6python6detail11init_moduleER11PyModuleDefPFvvE')
+    else
+        BOOST_HAS_SYM=$(grep -ac '_ZN5boost6python6detail11init_moduleER11PyModuleDefPFvvE' "${BOOST_DEST}")
+    fi
+    if [ "${BOOST_HAS_SYM:-0}" -eq 0 ]; then
+        echo -e "${COLOR_ERROR}[ERROR] ${BOOST_SO} does not export boost::python::detail::init_module.${COLOR_RESET}"
+        echo    "        Shipping it would reproduce the symbol lookup error."
+        rm -f "${BOOST_DEST}"; exit 1
+    fi
+    echo -e "${COLOR_WHITE}[✔] Vendored ${BOOST_SO} (init_module verified present).${COLOR_RESET}"
+fi
+
 # Sync latest welcome-app source files to filesystem overlay
 echo -e "${COLOR_MUTED}[i] Syncing Welcome App assets to filesystem overlay...${COLOR_RESET}"
 mkdir -p "${PROFILE_DIR}/airootfs/usr/share/phaethon-welcome-app"
@@ -107,6 +186,12 @@ echo -e "${COLOR_WHITE}[✔] Welcome App source synchronized.${COLOR_RESET}"
 # --- COMPILING THE LIVE ISO ---
 echo -e "${COLOR_ACCENT}[+] Step 3: Compiling bootable squashfs image with archiso...${COLOR_RESET}"
 echo -e "${COLOR_MUTED}This process may take some time depending on your system and network throughput...${COLOR_RESET}"
+
+# The vendoring marker is bookkeeping for this script, not ISO content --
+# archiso copies the overlay verbatim, so remove it before the image is built.
+BOOST_MARKER="${PROFILE_DIR}/airootfs/usr/lib/.${BOOST_SO}.source"
+BOOST_PKG_USED="$( [ -f "${BOOST_MARKER}" ] && cat "${BOOST_MARKER}" || echo unknown )"
+rm -f "${BOOST_MARKER}"
 
 # Execute archiso build
 # -w work dir, -o output dir, -v verbose
@@ -119,6 +204,9 @@ if [ ${BUILD_STATUS} -eq 0 ]; then
     echo "  P H A E T H O N   O S   C O M P I L A T I O N   C O M P L E T E D !"
     echo "=========================================================================="
     echo -e "Bootable ISO compiled successfully! File is saved at:"
+    if [ "${BOOST_PKG_USED:-unknown}" != unknown ]; then
+        echo -e "${COLOR_MUTED}Vendored boost: ${BOOST_PKG_USED} -> ${BOOST_SO}${COLOR_RESET}"
+    fi
     echo -e "${COLOR_ACCENT}${OUT_DIR}/phaethon-os-v1.0.0-Belle-x86_64.iso${COLOR_RESET}"
 else
     echo -e "${COLOR_ERROR}[ERROR] Compilation failed during mkarchiso execution (Exit Code: ${BUILD_STATUS}).${COLOR_RESET}"

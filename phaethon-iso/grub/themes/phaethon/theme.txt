@@ -31,6 +31,29 @@ desktop-color: "#0a0a0a"
 
 # ------------------------------------------------------------------------------
 # Centered distro golden star emblem
+#
+# `width`/`height` ON AN IMAGE ARE A FLOOR, NOT A CEILING. GRUB's canvas layout
+# clamps every component up to its minimal size (gui_canvas.c):
+#
+#     comp->ops->get_minimal_size (comp, &mw, &mh);
+#     if (w < (signed) mw) w = mw;
+#
+# and image_get_minimal_size returns the *raw bitmap's* dimensions. The source
+# art was 251x251, so `width = 180` was ignored and the emblem drew at 251px --
+# which is why it sat (251-180)/2 = 35.5px right of centre on the v1.0.0-Belle
+# boot menu. `left = 50%-90` is only centred for a component that is genuinely
+# 180 wide.
+#
+# logo.png is therefore generated at exactly 180x180 by tools/pixelate-logo.py
+# from the master phaethon-logo.png. That makes the clamp a no-op, and it also
+# means gui_image.c takes its `self->bitmap = self->raw_bitmap` fast path
+# instead of resampling with GRUB_VIDEO_BITMAP_SCALE_METHOD_BEST -- so the
+# 5px blocks baked into the file reach the screen 1:1 rather than being
+# bilinearly smoothed back into a soft HD emblem that clashes with the 16px
+# bitmap Unifont everything else on this screen is drawn in.
+#
+# If you change these numbers, re-run tools/pixelate-logo.py with a matching
+# --size or the centring breaks again.
 # ------------------------------------------------------------------------------
 + image {
     file = "logo.png"

@@ -19,7 +19,7 @@ jobs:
               pacman-key --init
               pacman-key --populate archlinux
               pacman -Syu --noconfirm
-              pacman -S --noconfirm archiso dosfstools grub mtools xorriso squashfs-tools
+              pacman -S --noconfirm archiso dosfstools grub mtools xorriso squashfs-tools binutils curl
               cd /build
               ./build-iso.sh
             "
