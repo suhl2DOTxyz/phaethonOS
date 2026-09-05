@@ -48,7 +48,7 @@ desktop-color: "#0a0a0a"
 # from the master phaethon-logo.png. That makes the clamp a no-op, and it also
 # means gui_image.c takes its `self->bitmap = self->raw_bitmap` fast path
 # instead of resampling with GRUB_VIDEO_BITMAP_SCALE_METHOD_BEST -- so the
-# 6px blocks baked into the file reach the screen 1:1 rather than being
+# 5px blocks baked into the file reach the screen 1:1 rather than being
 # bilinearly smoothed back into a soft HD emblem that clashes with the 16px
 # bitmap Unifont everything else on this screen is drawn in.
 #

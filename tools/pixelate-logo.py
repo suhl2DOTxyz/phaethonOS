@@ -226,7 +226,7 @@ def upscale(blocks, px, factor):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--blocks", type=int, default=45, help="pixel grid (default 45)")
+    ap.add_argument("--blocks", type=int, default=36, help="pixel grid (default 36)")
     ap.add_argument("--size", type=int, default=180, help="output px (default 180)")
     ap.add_argument(
         "--alpha-threshold",
