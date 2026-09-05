@@ -1,0 +1,41 @@
+# Initialise the LIVE session's pacman keyring at boot.
+#
+# WITHOUT THIS, PACMAN IS DEAD IN THE LIVE ENVIRONMENT:
+#
+#   warning: Public keyring not found; have you run 'pacman-key --init'?
+#   error: cachyos: key "..." is unknown
+#   error: keyring is not writable
+#   error: failed to synchronize all databases (unexpected error)
+#
+# Installing archlinux-keyring and cachyos-keyring only puts the key material
+# on disk at /usr/share/pacman/keyrings; it does not build the trust database
+# that pacman actually reads. mkarchiso does not do it either -- the packages
+# are installed into airootfs, never initialised. archiso's own releng profile
+# ships exactly this unit for exactly this reason, and this profile was missing
+# it, so every ISO built so far shipped a live session that could not install
+# a single package.
+#
+# That broke more than a manual `pacman -S`: the welcome dashboard's deploy
+# buttons all shell out to pacman, and Calamares needs a working host keyring
+# before pacstrap can verify anything it downloads.
+#
+# shellprocess@initialize_pacman still runs the same commands during the
+# install. That is deliberate belt-and-braces (pacman-key --init is
+# idempotent), but it happens *after* the disk has already been repartitioned,
+# which is far too late to find out. Doing it at boot means a broken keyring
+# surfaces while the user is still looking at a live desktop.
+[Unit]
+Description=Initializes Pacman keyring
+Requires=etc-pacman.d-gnupg.mount
+After=etc-pacman.d-gnupg.mount time-sync.target
+BindsTo=etc-pacman.d-gnupg.mount
+Before=archlinux-keyring-wkd-sync.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/pacman-key --init
+ExecStart=/usr/bin/pacman-key --populate
+
+[Install]
+WantedBy=multi-user.target

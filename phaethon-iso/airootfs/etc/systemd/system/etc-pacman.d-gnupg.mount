@@ -1,0 +1,17 @@
+# Backing store for the live pacman keyring.
+#
+# gnupg needs a directory it can create sockets in, with real permission
+# semantics. /etc on the live ISO is an overlay over squashfs, where gpg-agent's
+# sockets are unreliable, so archiso puts a small tmpfs here instead and so do
+# we. Taken from archiso's releng profile verbatim.
+#
+# No [Install] section on purpose: pacman-init.service pulls this in with
+# Requires=/BindsTo=, so enabling that one unit is enough.
+[Unit]
+Description=Temporary /etc/pacman.d/gnupg directory
+
+[Mount]
+What=tmpfs
+Where=/etc/pacman.d/gnupg
+Type=tmpfs
+Options=mode=0755,noswap
